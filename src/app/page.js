@@ -8,7 +8,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-          const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzQ0MzEwODgzfQ.EJBxdvjk9DAxBVgG85NmW0QptnxkapAkxCSS8aNFYBI";
+          const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzQ0NjU1MDU4fQ.07168RYr_2yDY368ca7qq1gFcfTzQZgJIXqwjbOOdQE";
           
           const response = await fetch('http://localhost:8000/users', {
             method: 'GET',
@@ -40,7 +40,7 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Bienvenido a mi aplicación</h1>
+      <h2>Bienvenido a mi aplicación</h2>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
