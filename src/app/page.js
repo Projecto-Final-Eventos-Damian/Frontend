@@ -1,49 +1,51 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import UserCard from "@/components/userCard.js";
 
-const Home = () => {
-  const [data, setData] = useState(null);
+export default function Home() {
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-        try {
-          const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzQ0NjU1MDU4fQ.07168RYr_2yDY368ca7qq1gFcfTzQZgJIXqwjbOOdQE";
-          
-          const response = await fetch('http://localhost:8000/users', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          
-          if (!response.ok) {
-            throw new Error('Hubo un error al obtener los datos');
-          }
-          
-          const result = await response.json();
-          setData(result);
-        } catch (error) {
-          console.error('Error:', error);
-          setData(null);
-        }
-      };
-      
+    const fetchUsers = async () => {
+      try {
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzQ0NzM4MzQ5fQ.akgwXEsl4EBtnI7WQ9OBAb5zL-m8ELmF0Li9yAKKFxI";
 
-    fetchData();
+        const response = await fetch("http://localhost:8000/users", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al obtener los usuarios");
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (err) {
+        console.error("Error:", err);
+        setUsers([]);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
-  if (!data) {
-    return <div>Cargando...</div>;
+  if (!users) {
+    return <p className="p-4">Cargando usuarios...</p>;
   }
 
   return (
-    <div>
-      <h2>Bienvenido a mi aplicación</h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+    <div className="p-6 mx-auto">
+      <h2 className="text-2xl font-bold mb-6">Usuarios</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {users.map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
     </div>
   );
-};
-
-export default Home;
+}
