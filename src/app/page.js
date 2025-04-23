@@ -1,49 +1,42 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from "react";
-import UserCard from "@/components/userCard.js";
+import EventCard from "@/components/eventCard.js";
+import { apiFetch } from "@/services/api.js";
 
 export default function Home() {
-  const [users, setUsers] = useState(null);
+  const [events, setEvents] = useState(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchEvents = async () => {
       try {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzQ0NzM4MzQ5fQ.akgwXEsl4EBtnI7WQ9OBAb5zL-m8ELmF0Li9yAKKFxI";
-
-        const response = await fetch("http://localhost:8000/users", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await apiFetch("http://localhost:8000/events");
 
         if (!response.ok) {
-          throw new Error("Error al obtener los usuarios");
+          throw new Error("Error al obtener los eventos");
         }
 
         const data = await response.json();
-        setUsers(data);
+        setEvents(data);
       } catch (err) {
         console.error("Error:", err);
-        setUsers([]);
+        setEvents([]);
       }
     };
 
-    fetchUsers();
+    fetchEvents();
   }, []);
 
-  if (!users) {
-    return <p className="p-4">Cargando usuarios...</p>;
+  if (!events) {
+    return <p className="p-4">Cargando eventos...</p>;
   }
 
   return (
     <div className="p-6 mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Usuarios</h2>
+      <h2 className="text-2xl font-bold mb-6">Eventos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {users.map((user) => (
-          <UserCard key={user.id} user={user} />
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
         ))}
       </div>
     </div>
