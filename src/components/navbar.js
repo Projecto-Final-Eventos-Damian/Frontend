@@ -2,22 +2,18 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/services/authContext.js';
-import { useEffect, useState } from 'react';
+import { useAuth } from '@/hook/authContext';
 
 export default function Navbar() {
   const router = useRouter();
-  const { isAuthenticated, logout } = useAuth();
-  const [isAuth, setIsAuth] = useState(isAuthenticated);
-
-  useEffect(() => {
-    setIsAuth(isAuthenticated);
-  }, [isAuthenticated]);
+  const { isAuthenticated, isLoading, logout } = useAuth();
 
   const handleLogout = () => {
+    router.push('/');
     logout();
-    router.push('/login');
   };
+
+  if (isLoading) return null;
 
   return (
     <nav>
@@ -26,7 +22,7 @@ export default function Navbar() {
           <Link href="/">Home</Link>
         </li>
         <li className="py-4 px-6">
-          <Link href="/about">About</Link>
+          <Link href="/createEvents">Create Events</Link>
         </li>
         <li className="py-4 px-6">
           <Link href="/dashboard">Dashboard</Link>
@@ -36,13 +32,17 @@ export default function Navbar() {
             <Link href="/profile">Profile</Link>
           </li>
         )}
-        {isAuthenticated && (
-          <li className="py-4 px-6">
+        <li className="py-4 px-6">
+          {isAuthenticated ? (
             <button onClick={handleLogout} className="text-red-500 cursor-pointer">
               Logout
             </button>
-          </li>
-        )}
+          ) : (
+            <Link href="/login" className="text-blue-500">
+              Login
+            </Link>
+          )}
+        </li>
       </ul>
     </nav>
   );

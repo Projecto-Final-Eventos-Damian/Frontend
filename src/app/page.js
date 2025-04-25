@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import EventCard from "@/components/eventCard.js";
-import { apiFetch } from "@/services/api.js";
+import EventCard from "@/components/eventCard";
+import { apiFetch } from "@/services/api";
 
 export default function Home() {
   const [events, setEvents] = useState(null);

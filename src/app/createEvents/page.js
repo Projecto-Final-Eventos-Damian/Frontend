@@ -3,19 +3,19 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function DashboardPage() {
+export default function CreateEventsPage() {
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      router.push('/login?redirect=/dashboard');
+      router.push('/login?redirect=/createEvents');
     }
   }, []);
 
   return (
     <div>
-      <h1>Bienvenido al Dashboard</h1>
+      <h1>Bienvenido a la creación de eventos</h1>
     </div>
   );
 }
