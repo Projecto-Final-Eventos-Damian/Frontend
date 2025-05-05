@@ -1,7 +1,7 @@
 'use client';
 
 import { useLogin } from '@/hook/useLogin';
-import LoginForm from '@/components/loginForm';
+import LoginForm from '@/components/forms/loginForm';
 
 export default function LoginPage() {
   const { handleLogin, error } = useLogin();
