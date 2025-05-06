@@ -12,7 +12,7 @@ export default function EventForm({ onSubmit, error }) {
     start_date_time: '',
     end_date_time: '',
     location: '',
-    image_url: '',
+    image: null,
   });
 
   const [categories, setCategories] = useState([]);
@@ -30,17 +30,28 @@ export default function EventForm({ onSubmit, error }) {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    if (name === 'image') {
+      setFormData((prev) => ({ ...prev, image: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({
-      ...formData,
-      category_id: Number(formData.category_id),
-      capacity: Number(formData.capacity),
-    });
+
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('description', formData.description);
+    data.append('category_id', formData.category_id);
+    data.append('capacity', formData.capacity);
+    data.append('start_date_time', formData.start_date_time);
+    data.append('end_date_time', formData.end_date_time);
+    data.append('location', formData.location);
+    data.append('image', formData.image);
+
+    onSubmit(data);
   };
 
   return (
@@ -65,7 +76,9 @@ export default function EventForm({ onSubmit, error }) {
       <input name="start_date_time" type="datetime-local" value={formData.start_date_time} onChange={handleChange} className="w-full p-2 border rounded" required />
       <input name="end_date_time" type="datetime-local" value={formData.end_date_time} onChange={handleChange} className="w-full p-2 border rounded" required />
       <input name="location" placeholder="Ubicación" value={formData.location} onChange={handleChange} className="w-full p-2 border rounded" required />
-      <input name="image_url" placeholder="Ruta de imagen" value={formData.image_url} onChange={handleChange} className="w-full p-2 border rounded" required />
+      
+      <input name="image" type="file" accept="image/*" onChange={handleChange} className="w-full p-2 border rounded" required />
+      
       <button type="submit" className="w-full p-2 bg-green-500 text-white rounded">Crear Evento</button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </form>

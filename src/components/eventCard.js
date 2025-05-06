@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '@/utils/entorn';
+
 export default function EventCard({ event }) {
     return (
       <div className="bg-white shadow rounded p-4 border border-gray-200">
@@ -22,7 +24,7 @@ export default function EventCard({ event }) {
         
         {event.image_url && (
           <img
-            src={event.image_url}
+            src={`${API_BASE_URL}${event.image_url}`}
             alt={event.title}
             className="w-full h-48 object-cover rounded mt-3"
           />
