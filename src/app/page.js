@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import EventCard from "@/components/eventCard";
-import { apiFetch } from "@/services/api";
+import EventCard from "@/components/cards/eventCard";
+import { getEvents } from "@/services/petitions";
 
 export default function Home() {
   const [events, setEvents] = useState(null);
@@ -10,13 +10,7 @@ export default function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await apiFetch("http://localhost:8000/events");
-
-        if (!response.ok) {
-          throw new Error("Error al obtener los eventos");
-        }
-
-        const data = await response.json();
+        const data = await getEvents()
         setEvents(data);
       } catch (err) {
         console.error("Error:", err);

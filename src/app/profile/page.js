@@ -12,7 +12,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      router.push('/login?redirect=/profile');
+      router.replace('/login?redirect=/profile');
       return;
     }
 

@@ -18,6 +18,17 @@ export const getCurrentUser = async () => {
   return res.json();
 };
 
+export const getFollowersCount = async (organizerId) => {
+  const res = await apiFetch(`${API_BASE_URL}/followers/organizer/${organizerId}`);
+  console.log("Respuesta de API para seguidores:", res);
+  if (!res.ok) {
+    throw new Error('No se pudo obtener la cantidad de seguidores');
+  }
+  const followers = await res.json();
+  console.log("Followers recibidos:", followers);
+  return followers.length;
+};
+
 export const getCategories = async () => {
   const res = await apiFetch(`${API_BASE_URL}/categories`);
   if (!res.ok) throw new Error('Error al obtener categorías');
@@ -46,4 +57,16 @@ export const getEventById = async (id) => {
   const res = await apiFetch(`${API_BASE_URL}/events/${id}`);
   if (!res.ok) throw new Error('No se pudo cargar el evento');
   return await res.json();
+};
+
+export const getEvents = async () => {
+  const res = await apiFetch(`${API_BASE_URL}/events`);
+  if (!res.ok) throw new Error('No se pudo cargar los eventos');
+  return await res.json();
+};
+
+export const getOrganizerEvents = async (organizerId) => {
+  const res = await apiFetch(`${API_BASE_URL}/events/organizer/${organizerId}`);
+  if (!res.ok) throw new Error('No se pudieron obtener los eventos del organizador');
+  return res.json();
 };

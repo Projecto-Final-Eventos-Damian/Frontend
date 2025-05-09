@@ -14,7 +14,7 @@ export default function CreateEventsPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      router.push('/login?redirect=/createEvents');
+      router.replace('/login?redirect=/createEvents');
     } else {
       setAuthorized(true);
     }
