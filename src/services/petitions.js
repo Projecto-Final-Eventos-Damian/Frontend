@@ -70,3 +70,12 @@ export const getOrganizerEvents = async (organizerId) => {
   if (!res.ok) throw new Error('No se pudieron obtener los eventos del organizador');
   return res.json();
 };
+
+export const createTicketType = async (ticket) => {
+  const res = await apiFetch(`${API_BASE_URL}/ticket-types`, {
+    method: 'POST',
+    body: JSON.stringify(ticket),
+  });
+  if (!res.ok) throw new Error('Error al crear un tipo de entrada');
+  return await res.json();
+};

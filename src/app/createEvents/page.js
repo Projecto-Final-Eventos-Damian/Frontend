@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import EventForm from '@/components/forms/eventForm';
-import { createEvent } from '@/services/petitions';
+import { createEvent, createTicketType } from '@/services/petitions';
 
 export default function CreateEventsPage() {
   const router = useRouter();
@@ -20,14 +20,24 @@ export default function CreateEventsPage() {
     }
   }, [router]);
 
-  const handleCreateEvent = async (eventData) => {
+  const handleCreateEvent = async (formData) => {
     setError('');
     setSuccessMessage('');
+  
     try {
-      await createEvent(eventData);
-      setSuccessMessage('Evento creado con éxito');
+      const ticketTypesJSON = formData.get('ticket_types');
+      const ticketTypes = JSON.parse(ticketTypesJSON);
+      formData.delete('ticket_types');
+      const event = await createEvent(formData);
+      const eventId = event.id;
+      await Promise.all(
+        ticketTypes.map((ticket) =>
+          createTicketType({ ...ticket, event_id: eventId })
+        )
+      );
+      setSuccessMessage('Evento y tickets creados con éxito');
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Error al crear el evento o los tickets');
     }
   };
 
