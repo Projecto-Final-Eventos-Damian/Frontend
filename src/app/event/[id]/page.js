@@ -35,14 +35,13 @@ export default function EventDetailPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold">{event.title}</h1>
       <img
         src={`${API_BASE_URL}${event.image_url}`}
         alt={event.title}
         className="mt-4 max-w-md"
       />
+      <h1 className="text-3xl font-bold">{event.title}</h1>
       <p className="mt-4 text-lg">{event.description}</p>
-      {/* Info del organizador */}
       <div className="mt-6 p-4 border border-gray-300 rounded-lg shadow-sm bg-white">
         <h2 className="text-xl font-semibold mb-2">Organizado por</h2>
         <p>

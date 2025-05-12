@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, getOrganizerEvents } from '@/services/petitions';
-import EventCard from '@/components/cards/eventCard';
+import EventOrgCard from '@/components/cards/eventOrgCard';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -40,14 +40,27 @@ export default function DashboardPage() {
       <h1 className="text-2xl font-bold mb-4">
         Bienvenido, {user?.name || user?.email || 'Usuario'}
       </h1>
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {user.role === 'organizer' && (
+          <>
+            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">Crear evento</button>
+            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">Ver estadísticas</button>
+          </>
+        )}
+        {user.role === 'user' && (
+          <>
+            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">Ver eventos</button>
+            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">Mis inscripciones</button>
+          </>
+        )}
+      </div><br></br>
       {user.role === 'organizer' ? (
         <>
           <h2 className="text-xl font-semibold mb-2">Tus eventos como organizador</h2>
           {events.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {events.map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventOrgCard key={event.id} event={event} />
               ))}
             </div>
           ) : (

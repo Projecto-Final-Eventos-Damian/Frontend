@@ -7,6 +7,17 @@ export default function EventCard({ event }) {
       <Link href={`/event/${event.id}`}>
         <h3 className="text-xl font-bold text-indigo-600">{event.title}</h3>
       </Link>
+      
+      <Link href={`/event/${event.id}`}>
+        {event.image_url && (
+          <img
+            src={`${API_BASE_URL}${event.image_url}`}
+            alt={event.title}
+            className="w-full h-48 object-cover rounded mt-3"
+          />
+        )}
+      </Link>
+
       <p className="text-gray-700 mb-2">{event.description}</p>
       
       <div className="text-sm text-gray-600 mb-1">
@@ -24,16 +35,6 @@ export default function EventCard({ event }) {
       <div className="text-sm text-gray-600 mb-1">
         <strong>Capacidad:</strong> {event.capacity}
       </div>
-      
-      <Link href={`/event/${event.id}`}>
-        {event.image_url && (
-          <img
-            src={`${API_BASE_URL}${event.image_url}`}
-            alt={event.title}
-            className="w-full h-48 object-cover rounded mt-3"
-          />
-        )}
-      </Link>
     </div>
   );
 }
