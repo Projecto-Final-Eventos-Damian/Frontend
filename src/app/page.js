@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import EventCard from "@/components/cards/eventCard";
-import { getEvents } from "@/services/petitions";
+import { getEvents } from "@/services";
 
 export default function Home() {
   const [events, setEvents] = useState(null);

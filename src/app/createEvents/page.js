@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import EventForm from '@/components/forms/eventForm';
-import { createEvent, createTicketType } from '@/services/petitions';
+import { createEvent, createTicketType } from '@/services';
 
 export default function CreateEventsPage() {
   const router = useRouter();
@@ -46,7 +46,7 @@ export default function CreateEventsPage() {
   return (
     <div className="p-6 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">Bienvenido a la creación de eventos</h1>
-      <EventForm onSubmit={handleCreateEvent} error={error} />
+      <EventForm onSubmit={handleCreateEvent} error={error} mode="create" />
       {successMessage && <p className="text-green-600 mt-2">{successMessage}</p>}
     </div>
   );

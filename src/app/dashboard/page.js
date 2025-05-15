@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, getOrganizerEvents } from '@/services/petitions';
+import { getCurrentUser, getOrganizerEvents, deleteEvent } from '@/services';
 import EventOrgCard from '@/components/cards/eventOrgCard';
 
 export default function DashboardPage() {
@@ -10,6 +10,20 @@ export default function DashboardPage() {
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleDeleteEvent = async (id, title) => {
+    const confirmDelete = window.confirm(`¿Seguro que quieres eliminar el evento con id ${id} "${title}"?`);
+    if (!confirmDelete) return;
+  
+    try {
+      await deleteEvent(id);
+      setEvents((prev) => prev.filter((e) => e.id !== id));
+      alert('Evento eliminado correctamente.');
+    } catch (err) {
+      console.error(err);
+      alert('No se pudo eliminar el evento.');
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -34,7 +48,9 @@ export default function DashboardPage() {
     };
     loadData();
   }, [router]);
+
   if (loading) return <p className="p-4">Cargando datos...</p>;
+
   return (
     <div className="p-6 mx-auto">
       <h1 className="text-2xl font-bold mb-4">
@@ -60,7 +76,7 @@ export default function DashboardPage() {
           {events.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {events.map((event) => (
-                <EventOrgCard key={event.id} event={event} />
+                <EventOrgCard key={event.id} event={event} onDelete={handleDeleteEvent} />
               ))}
             </div>
           ) : (

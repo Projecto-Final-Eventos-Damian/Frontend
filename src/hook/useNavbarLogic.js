@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hook/authContext';
-import { getCurrentUser } from '@/services/petitions';
+import { getCurrentUser } from '@/services';
 
 export function useNavbarLogic() {
   const router = useRouter();

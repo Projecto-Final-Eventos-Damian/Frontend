@@ -1,9 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getCategories } from '@/services/petitions';
+import { getCategories } from '@/services';
 
-export default function EventForm({ onSubmit, error }) {
+export default function EventForm({ onSubmit, error, initialData = {}, mode = 'create' }) {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -13,6 +16,8 @@ export default function EventForm({ onSubmit, error }) {
     end_date_time: '',
     location: '',
     image: null,
+    ...initialData,
+    category_id: initialData.category?.id?.toString() || '',
   });
 
   const [ticketTypes, setTicketTypes] = useState([
@@ -42,39 +47,18 @@ export default function EventForm({ onSubmit, error }) {
     }
   };
 
-  const handleTicketTypeChange = (index, field, value) => {
-    const updated = [...ticketTypes];
-    updated[index][field] = value;
-    setTicketTypes(updated);
-  };
-
-  const addTicketType = () => {
-    setTicketTypes((prev) => [...prev, { name: '', description: '', price: '' }]);
-  };
-
-  const removeTicketType = (index) => {
-    if (ticketTypes.length > 1) {
-      const updated = [...ticketTypes];
-      updated.splice(index, 1);
-      setTicketTypes(updated);
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = new FormData();
-    data.append('title', formData.title);
-    data.append('description', formData.description);
-    data.append('category_id', formData.category_id);
-    data.append('capacity', formData.capacity);
-    data.append('start_date_time', formData.start_date_time);
-    data.append('end_date_time', formData.end_date_time);
-    data.append('location', formData.location);
-    if (formData.image) {
-      data.append('image', formData.image);
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'image' && !value) return;
+      data.append(key, value);
+    });
+
+    if (mode === 'create') {
+      data.append('ticket_types', JSON.stringify(ticketTypes));
     }
-    data.append('ticket_types', JSON.stringify(ticketTypes));
 
     onSubmit(data);
   };
@@ -97,52 +81,74 @@ export default function EventForm({ onSubmit, error }) {
       <input name="location" placeholder="Ubicación" value={formData.location} onChange={handleChange} className="w-full p-2 border rounded" required />
       <input name="image" type="file" accept="image/*" onChange={handleChange} className="w-full p-2 border rounded" />
 
-      <div>
-        <h3 className="text-lg font-semibold mt-4 mb-2">Tipos de Entrada</h3>
-        {ticketTypes.map((ticket, index) => (
-          <div key={index} className="border p-4 rounded mb-2 relative">
-            <input
-              type="text"
-              placeholder="Nombre del ticket"
-              value={ticket.name}
-              onChange={(e) => handleTicketTypeChange(index, 'name', e.target.value)}
-              className="w-full p-2 border rounded mb-2"
-              required
-            />
-            <textarea
-              placeholder="Descripción del ticket"
-              value={ticket.description}
-              onChange={(e) => handleTicketTypeChange(index, 'description', e.target.value)}
-              className="w-full p-2 border rounded mb-2"
-            />
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Precio"
-              value={ticket.price}
-              onChange={(e) => handleTicketTypeChange(index, 'price', e.target.value)}
-              className="w-full p-2 border rounded"
-              required
-            />
+      {mode === 'create' && (
+        <div>
+          <h3 className="text-lg font-semibold mt-4 mb-2">Tipos de Entrada</h3>
+          {ticketTypes.map((ticket, index) => (
+            <div key={index} className="border p-4 rounded mb-2 relative">
+              <input
+                type="text"
+                placeholder="Nombre del ticket"
+                value={ticket.name}
+                onChange={(e) => {
+                  const updated = [...ticketTypes];
+                  updated[index].name = e.target.value;
+                  setTicketTypes(updated);
+                }}
+                className="w-full p-2 border rounded mb-2"
+                required
+              />
+              <textarea
+                placeholder="Descripción del ticket"
+                value={ticket.description}
+                onChange={(e) => {
+                  const updated = [...ticketTypes];
+                  updated[index].description = e.target.value;
+                  setTicketTypes(updated);
+                }}
+                className="w-full p-2 border rounded mb-2"
+              />
+              <input
+                type="number"
+                step="0.01"
+                placeholder="Precio"
+                value={ticket.price}
+                onChange={(e) => {
+                  const updated = [...ticketTypes];
+                  updated[index].price = e.target.value;
+                  setTicketTypes(updated);
+                }}
+                className="w-full p-2 border rounded"
+                required
+              />
+              {ticketTypes.length > 1 && (
+                <button type="button" onClick={() => {
+                  const updated = [...ticketTypes];
+                  updated.splice(index, 1);
+                  setTicketTypes(updated);
+                }} className="mt-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-800 transition">
+                  Eliminar ticket
+                </button>
+              )}
+            </div>
+          ))}
 
-            {ticketTypes.length > 1 && (
-              <button
-                type="button"
-                onClick={() => removeTicketType(index)}
-                className="mt-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-800 transition"
-              >
-                Eliminar ticket
-              </button>
-            )}
-          </div>
-        ))}
+          <button type="button" onClick={() => setTicketTypes(prev => [...prev, { name: '', description: '', price: '' }])} className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition">
+            + Añadir ticket
+          </button>
+        </div>
+      )}
 
-        <button type="button" onClick={addTicketType} className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition">
-          + Añadir ticket
-        </button>
-      </div>
-
-      <button type="submit" className="w-full p-2 bg-green-500 text-white rounded">Crear Evento</button>
+      <button type="submit" className="w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded">
+        {mode === 'create' ? 'Crear Evento' : 'Guardar Cambios'}
+      </button>
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      >
+        Volver
+      </button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </form>
   );

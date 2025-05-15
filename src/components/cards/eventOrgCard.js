@@ -1,11 +1,10 @@
 import { API_BASE_URL } from '@/utils/entorn';
 import Link from 'next/link';
 
-export default function EventOrgCard({ event }) {
+export default function EventOrgCard({ event, onDelete }) {
   return (
     <div className="bg-white shadow rounded border border-gray-200 p-4 flex flex-col gap-4">
 
-      {/* Contenido principal (imagen + texto) */}
       <div className="flex flex-col lg:flex-row gap-4 items-start">
         <Link href={`/event/${event.id}`} className="w-full lg:w-1/3">
           {event.image_url && (
@@ -37,10 +36,18 @@ export default function EventOrgCard({ event }) {
           >
         <i className="bi bi-eye text-lg"></i>
         </Link>
-        <button title="Editar" className="bg-yellow-500 hover:bg-yellow-600 text-white rounded px-3 py-2 w-full">
-          <i className="bi bi-pencil text-lg"></i>
-        </button>
-        <button title="Eliminar" className="bg-red-600 hover:bg-red-700 text-white rounded px-3 py-2 w-full">
+        <Link
+          href={`/editEvents/${event.id}`}
+          title="Editar"
+          className="bg-yellow-500 hover:bg-yellow-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
+          >
+        <i className="bi bi-pencil text-lg"></i>
+        </Link>
+        <button
+          onClick={() => onDelete(event.id, event.title)}
+          title="Eliminar"
+          className="bg-red-600 hover:bg-red-700 text-white rounded px-3 py-2 w-full flex justify-center items-center cursor-pointer"
+        >
           <i className="bi bi-trash text-lg"></i>
         </button>
       </div>
