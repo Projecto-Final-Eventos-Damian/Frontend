@@ -21,6 +21,10 @@ export default function EventCard({ event }) {
       <p className="text-gray-700 mb-2">{event.description}</p>
       
       <div className="text-sm text-gray-600 mb-1">
+        <strong>Categoría:</strong> {event.category.name}
+      </div>
+
+      <div className="text-sm text-gray-600 mb-1">
         <strong>Ubicación:</strong> {event.location}
       </div>
       

@@ -20,6 +20,7 @@ export default function EventOrgCard({ event, onDelete }) {
           <h3 className="text-xl font-bold text-indigo-600">{event.title}</h3>
           <p className="text-gray-700 my-2">{event.description}</p>
           <div>
+            <div><strong>Categoría:</strong> {event.category.name}</div>
             <div><strong>Ubicación:</strong> {event.location}</div>
             <div><strong>Inicio:</strong> {new Date(event.start_date_time).toLocaleString()}</div>
             <div><strong>Fin:</strong> {new Date(event.end_date_time).toLocaleString()}</div>
@@ -51,6 +52,13 @@ export default function EventOrgCard({ event, onDelete }) {
           <i className="bi bi-trash text-lg"></i>
         </button>
       </div>
+      <Link
+        href={`/ticketTypes/${event.id}`}
+        title="Ver TiquetTypes"
+        className="bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
+        >
+      Ver tipos de tiquets
+      </Link>
     </div>
   );
 }

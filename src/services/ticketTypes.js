@@ -9,3 +9,9 @@ export const createTicketType = async (ticket) => {
   if (!res.ok) throw new Error('Error al crear un tipo de entrada');
   return res.json();
 };
+
+export const getEventTicketTypes = async (eventId) => {
+  const res = await apiFetch(`${API_BASE_URL}/ticket-types/event/${eventId}`);
+  if (!res.ok) throw new Error('Error al obtener tipos de ticket');
+  return res.json();
+};
