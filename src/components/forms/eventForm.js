@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getCategories } from '@/services';
 
-export default function EventForm({ onSubmit, error, initialData = {}, mode = 'create' }) {
+export default function EventForm({ onSubmit, initialData = {}, mode = 'create' }) {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -67,7 +67,7 @@ export default function EventForm({ onSubmit, error, initialData = {}, mode = 'c
     <form onSubmit={handleSubmit} className="space-y-4">
       <input name="title" placeholder="Título" value={formData.title} onChange={handleChange} className="w-full p-2 border rounded" required />
       <textarea name="description" placeholder="Descripción" value={formData.description} onChange={handleChange} className="w-full p-2 border rounded" required />
-      
+
       <select name="category_id" value={formData.category_id} onChange={handleChange} className="w-full p-2 border rounded" required>
         <option value="" disabled>Selecciona una categoría</option>
         {categories.map((cat) => (
@@ -122,18 +122,25 @@ export default function EventForm({ onSubmit, error, initialData = {}, mode = 'c
                 required
               />
               {ticketTypes.length > 1 && (
-                <button type="button" onClick={() => {
-                  const updated = [...ticketTypes];
-                  updated.splice(index, 1);
-                  setTicketTypes(updated);
-                }} className="mt-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-800 transition">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = [...ticketTypes];
+                    updated.splice(index, 1);
+                    setTicketTypes(updated);
+                  }}
+                  className="mt-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-800 transition"
+                >
                   Eliminar ticket
                 </button>
               )}
             </div>
           ))}
-
-          <button type="button" onClick={() => setTicketTypes(prev => [...prev, { name: '', description: '', price: '' }])} className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition">
+          <button
+            type="button"
+            onClick={() => setTicketTypes(prev => [...prev, { name: '', description: '', price: '' }])}
+            className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition"
+          >
             + Añadir ticket
           </button>
         </div>
@@ -149,7 +156,6 @@ export default function EventForm({ onSubmit, error, initialData = {}, mode = 'c
       >
         Volver
       </button>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
     </form>
   );
 }

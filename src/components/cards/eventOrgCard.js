@@ -38,7 +38,7 @@ export default function EventOrgCard({ event, onDelete }) {
         <i className="bi bi-eye text-lg"></i>
         </Link>
         <Link
-          href={`/editEvents/${event.id}`}
+          href={`/edit/event/${event.id}`}
           title="Editar"
           className="bg-yellow-500 hover:bg-yellow-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
           >

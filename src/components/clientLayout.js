@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './navbar';
 
 export default function ClientLayout({ children }) {
@@ -21,6 +22,7 @@ export default function ClientLayout({ children }) {
           <p>&copy; 2025 EventMix. Todos los derechos reservados.</p>
         </footer>
       )}
+      <Toaster position="top-center" />
     </>
   );
 }

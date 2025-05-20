@@ -61,7 +61,7 @@ export default function DashboardPage() {
         {user.role === 'organizer' && (
           <>
             <Link
-              href="/createCategories"
+              href="/create/categories"
               className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer flex justify-center"
             >
               Crear categoría

@@ -10,6 +10,21 @@ export const createTicketType = async (ticket) => {
   return res.json();
 };
 
+export const updateTicketType = async (ticketId, updatedData) => {
+  const res = await apiFetch(`${API_BASE_URL}/ticket-types/${ticketId}`, {
+    method: 'PUT',
+    body: JSON.stringify(updatedData),
+  });
+  if (!res.ok) throw new Error('Error al actualizar el tipo de ticket');
+  return res.json();
+};
+
+export const getTicketTypeById = async (ticketId) => {
+  const res = await apiFetch(`${API_BASE_URL}/ticket-types/${ticketId}`);
+  if (!res.ok) throw new Error('Error al obtener los datos del ticket');
+  return res.json();
+};
+
 export const getEventTicketTypes = async (eventId) => {
   const res = await apiFetch(`${API_BASE_URL}/ticket-types/event/${eventId}`);
   if (!res.ok) throw new Error('Error al obtener tipos de ticket');

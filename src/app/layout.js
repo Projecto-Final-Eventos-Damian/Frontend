@@ -21,7 +21,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={raleway.className}>
         <AuthProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </AuthProvider>
       </body>
     </html>

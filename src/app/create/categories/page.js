@@ -14,7 +14,7 @@ export default function CreateCategoryPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      router.replace('/login?redirect=/createCategory');
+      router.replace('/login?redirect=/create/categories');
     } else {
       setAuthorized(true);
     }

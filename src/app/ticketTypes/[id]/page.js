@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getEventById, getEventTicketTypes } from '@/services';
+import TiquetTypeCard from '@/components/cards/tiquetTypeCard';
 
 export default function TicketTypesPage() {
   const params = useParams();
@@ -52,15 +53,11 @@ export default function TicketTypesPage() {
       {ticketTypes.length === 0 ? (
         <p>No hay tipos de tickets asociados a este evento.</p>
       ) : (
-        <ul className="space-y-4">
+        <div className="space-y-4">
           {ticketTypes.map((ticket) => (
-            <li key={ticket.id} className="border rounded p-4 shadow-sm">
-              <h3 className="text-lg font-semibold">{ticket.name}</h3>
-              <p className="text-sm text-gray-700">{ticket.description}</p>
-              <p className="font-bold mt-2">Precio: {ticket.price}€</p>
-            </li>
+            <TiquetTypeCard key={ticket.id} ticket={ticket} />
           ))}
-        </ul>
+        </div>
       )}
 
       <button

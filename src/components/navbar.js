@@ -23,7 +23,7 @@ export default function Navbar() {
           <Link href="/">Home</Link>
         </li>
         <li>
-          <Link href="/createEvents">Create Events</Link>
+          <Link href="/create/events">Create Events</Link>
         </li>
         <li className="mr-5">
           <Link href="/dashboard">Dashboard</Link>

@@ -18,7 +18,7 @@ export default function EditEventPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      router.replace('/login?redirect=/editEvent');
+      router.replace('/login?redirect=/edit/event');
     } else {
       setAuthorized(true);
       if (eventId) fetchEvent();
