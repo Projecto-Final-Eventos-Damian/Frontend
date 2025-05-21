@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { getTicketTypeById, updateTicketType } from '@/services';
 import TicketTypeForm from '@/components/forms/tiquetTypeForm';
+import { toast } from 'react-hot-toast';
 
 export default function EditTicketTypePage() {
+  const router = useRouter();
   const { id } = useParams();
   const [ticketData, setTicketData] = useState(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchTicket = async () => {
@@ -21,7 +21,7 @@ export default function EditTicketTypePage() {
           price: data.price,
         });
       } catch (err) {
-        setError('No se pudo cargar el ticket');
+        toast.error('No se pudo cargar el ticket');
       }
     };
 
@@ -29,13 +29,12 @@ export default function EditTicketTypePage() {
   }, [id]);
 
   const handleUpdate = async (updatedData) => {
-    setError('');
-    setSuccess('');
     try {
       await updateTicketType(id, updatedData);
-      setSuccess('Ticket actualizado con éxito');
+      router.back();
+      toast.success('Ticket actualizado con éxito');
     } catch (err) {
-      setError('Error al actualizar el ticket');
+      toast.error(err.message || 'Error al actualizar el ticket');
     }
   };
 
@@ -49,8 +48,6 @@ export default function EditTicketTypePage() {
       <TicketTypeForm
         onSubmit={handleUpdate}
         initialData={ticketData}
-        error={error}
-        success={success}
       />
     </div>
   );

@@ -13,7 +13,6 @@ export default function TicketTypesPage() {
   const [ticketTypes, setTicketTypes] = useState([]);
   const [eventTitle, setEventTitle] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,8 +28,7 @@ export default function TicketTypesPage() {
         const tickets = await getEventTicketTypes(eventId);
         setTicketTypes(tickets);
       } catch (err) {
-        setError('Error al obtener los datos del evento o los tipos de tickets');
-        console.error(err);
+        console.error('Error al obtener datos del evento:', err);
       } finally {
         setLoading(false);
       }
@@ -42,7 +40,6 @@ export default function TicketTypesPage() {
   }, [eventId, router]);
 
   if (loading) return <p className="p-4">Cargando tickets...</p>;
-  if (error) return <p className="text-red-500 p-4">{error}</p>;
 
   return (
     <div className="p-6 max-w-3xl mx-auto">

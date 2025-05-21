@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import EventForm from '@/components/forms/eventForm';
 import { getEventById, updateEvent } from '@/services';
+import { toast } from 'react-hot-toast';
 
 export default function EditEventPage() {
   const router = useRouter();
@@ -12,8 +13,6 @@ export default function EditEventPage() {
 
   const [eventData, setEventData] = useState(null);
   const [authorized, setAuthorized] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -34,18 +33,18 @@ export default function EditEventPage() {
         end_date_time: data.end_date_time.slice(0, 16),
       });
     } catch (err) {
-      setError('Error al cargar evento');
+      toast.error('Error al cargar evento');
     }
   };
 
   const handleUpdateEvent = async (formData) => {
     try {
       await updateEvent(eventId, formData);
-      setSuccessMessage('Evento actualizado correctamente');
-      setError('');
+      router.push('/dashboard');
+      toast.success('Evento actualizado correctamente');
     } catch (err) {
       console.error('Error al actualizar:', err);
-      setError(err?.message || 'Error desconocido');
+      toast.error(err?.message || 'Error desconocido');
     }
   };
 
@@ -57,10 +56,8 @@ export default function EditEventPage() {
       <EventForm
         initialData={eventData}
         onSubmit={handleUpdateEvent}
-        error={error}
         mode="edit"
       />
-      {successMessage && <p className="text-green-600 mt-2">{successMessage}</p>}
     </div>
   );
 }

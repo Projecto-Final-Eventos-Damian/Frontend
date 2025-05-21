@@ -6,8 +6,6 @@ import { useState } from 'react';
 export default function TicketTypeForm({
   onSubmit,
   initialData = { name: '', description: '', price: '' },
-  error = '',
-  success = '',
 }) {
   const router = useRouter();
   const [ticketData, setTicketData] = useState(initialData);
@@ -60,8 +58,6 @@ export default function TicketTypeForm({
       >
         Volver
       </button>
-      {error && <p className="text-red-500">{error}</p>}
-      {success && <p className="text-green-500">{success}</p>}
     </form>
   );
 }

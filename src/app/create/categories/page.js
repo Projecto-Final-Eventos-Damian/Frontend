@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CategoryForm from '@/components/forms/categoryForm';
 import { createCategory } from '@/services';
+import { toast } from 'react-hot-toast';
 
 export default function CreateCategoryPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -21,14 +20,12 @@ export default function CreateCategoryPage() {
   }, [router]);
 
   const handleCreateCategory = async (categoryData) => {
-    setError('');
-    setSuccessMessage('');
-
     try {
       await createCategory(categoryData);
-      setSuccessMessage('Categoría creada con éxito');
+      router.push('/dashboard');
+      toast.success('Categoría creada con éxito');
     } catch (err) {
-      setError(err.message || 'Error al crear la categoría');
+      toast.error(err.message || 'Error al crear la categoría');
     }
   };
 
@@ -37,8 +34,7 @@ export default function CreateCategoryPage() {
   return (
     <div className="p-6 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">Crear nueva categoría</h1>
-      <CategoryForm onSubmit={handleCreateCategory} error={error} />
-      {successMessage && <p className="text-green-600 mt-2">{successMessage}</p>}
+      <CategoryForm onSubmit={handleCreateCategory} />
     </div>
   );
 }

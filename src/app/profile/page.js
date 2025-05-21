@@ -7,7 +7,6 @@ import { getCurrentUser } from '@/services';
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -20,11 +19,9 @@ export default function ProfilePage() {
       .then(setUser)
       .catch((err) => {
         console.error('Error al cargar usuario:', err);
-        setError('No se pudo obtener el usuario');
       });
   }, [router]);
 
-  if (error) return <div className="p-4 text-red-600">{error}</div>;
   if (!user) return <div className="p-4">Cargando perfil...</div>;
 
   return (

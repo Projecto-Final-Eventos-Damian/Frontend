@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function CategoryForm({ onSubmit, error }) {
+export default function CategoryForm({ onSubmit }) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
@@ -48,7 +48,6 @@ export default function CategoryForm({ onSubmit, error }) {
       >
         Volver
       </button>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
     </form>
   );
 }

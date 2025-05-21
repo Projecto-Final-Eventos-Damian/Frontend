@@ -1,17 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hook/authContext';
 import { loginUser } from '@/services';
+import { toast } from 'react-hot-toast';
 
 export function useLogin() {
   const router = useRouter();
   const { login } = useAuth();
-  const [error, setError] = useState('');
 
   const handleLogin = async (email, password) => {
-    setError('');
     try {
       const data = await loginUser(email, password);
       login(data.token);
@@ -19,9 +17,9 @@ export function useLogin() {
       const redirectUrl = urlParams.get('redirect') || '/';
       router.push(redirectUrl);
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || 'Error al iniciar sesión');
     }
   };
 
-  return { handleLogin, error };
+  return { handleLogin };
 }

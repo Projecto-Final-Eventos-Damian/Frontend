@@ -34,7 +34,7 @@ export default function CreateEventsPage() {
         )
       );
 
-      router.push('/');
+      router.push('/dashboard');
       toast.success('Evento y tickets creados con éxito');
     } catch (err) {
       toast.error(err.message || 'Error al crear el evento o los tickets');

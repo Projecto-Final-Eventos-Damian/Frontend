@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function LoginForm({ onSubmit, error }) {
+export default function LoginForm({ onSubmit }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,7 +32,6 @@ export default function LoginForm({ onSubmit, error }) {
       <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
         Entrar
       </button>
-      {error && <p className="text-red-500 mt-2">{error}</p>}
     </form>
   );
 }
