@@ -45,7 +45,7 @@ export default function CreateEventsPage() {
 
   return (
     <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Bienvenido a la creación de eventos</h1>
+      <h1 className="text-2xl font-bold mb-4">Crear evento</h1>
       <EventForm onSubmit={handleCreateEvent} mode="create" />
     </div>
   );

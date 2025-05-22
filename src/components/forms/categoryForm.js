@@ -1,46 +1,57 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { categorySchema } from '@/schemas/categorySchema';
 
 export default function CategoryForm({ onSubmit }) {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(categorySchema),
+    defaultValues: {
+      name: '',
+      description: '',
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const submitHandler = (data) => {
+    onSubmit(data);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        name="name"
-        placeholder="Nombre de la categoría"
-        value={formData.name}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        required
-      />
-      <textarea
-        name="description"
-        placeholder="Descripción"
-        value={formData.description}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-      />
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
+      <div>
+        <input
+          {...register('name')}
+          placeholder="Nombre de la categoría"
+          className="w-full p-2 border rounded"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+        )}
+      </div>
+
+      <div>
+        <textarea
+          {...register('description')}
+          placeholder="Descripción"
+          className="w-full p-2 border rounded"
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+        )}
+      </div>
 
       <button type="submit" className="w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded">
         Crear Categoría
       </button>
+
       <button
         type="button"
         onClick={() => router.back()}

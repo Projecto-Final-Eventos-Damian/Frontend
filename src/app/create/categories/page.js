@@ -22,7 +22,7 @@ export default function CreateCategoryPage() {
   const handleCreateCategory = async (categoryData) => {
     try {
       await createCategory(categoryData);
-      router.push('/dashboard');
+      router.back();
       toast.success('Categoría creada con éxito');
     } catch (err) {
       toast.error(err.message || 'Error al crear la categoría');
