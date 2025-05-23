@@ -1,19 +1,26 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { Dialog } from '@headlessui/react';
 import { useParams } from "next/navigation";
 import { getEventById, getFollowersCount, getEventTicketTypes } from "@/services";
 import { API_BASE_URL } from "@/utils/entorn";
 import { useTicketCart } from "@/hook/useTicketCart";
-import TicketCart from "@/components/ticketCart";
+import TicketCartModal from "@/components/ticketCartModal";
 
 export default function EventDetailPage() {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [ticketTypes, setTicketTypes] = useState([]);
   const [followersCount, setFollowersCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { cart, updateQuantity, totalPrice } = useTicketCart(ticketTypes);
+  const { cart, updateQuantity, totalPrice, resetCart } = useTicketCart(ticketTypes);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    resetCart();
+  };
 
   useEffect(() => {
     if (id) {
@@ -58,13 +65,32 @@ export default function EventDetailPage() {
       <p><strong>Capacidad:</strong> {event.capacity}</p>
 
       {ticketTypes.length > 0 && (
-        <TicketCart
-          ticketTypes={ticketTypes}
-          cart={cart}
-          updateQuantity={updateQuantity}
-          totalPrice={totalPrice}
-        />
+        <div className="mt-6">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+          >
+            Reservar Tickets
+          </button>
+        </div>
       )}
+
+      <Dialog open={isModalOpen} onClose={handleCloseModal} className="relative z-50">
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <div className="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg">
+            <Dialog.Title className="text-2xl font-bold mb-4">Carrito de Tickets</Dialog.Title>
+            <TicketCartModal
+              eventId={id}
+              cart={cart}
+              ticketTypes={ticketTypes}
+              updateQuantity={updateQuantity}
+              totalPrice={totalPrice}
+              onClose={handleCloseModal}
+            />
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

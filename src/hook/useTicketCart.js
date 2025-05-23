@@ -11,10 +11,14 @@ export function useTicketCart(ticketTypes = []) {
     });
   }, []);
 
+  const resetCart = useCallback(() => {
+    setCart({});
+  }, []);
+
   const totalPrice = ticketTypes.reduce((acc, type) => {
     const qty = cart[type.id] || 0;
     return acc + qty * Number(type.price);
   }, 0);
 
-  return { cart, updateQuantity, totalPrice };
+  return { cart, updateQuantity, resetCart, totalPrice };
 }
