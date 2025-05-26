@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { getEventById, getFollowersCount, getEventTicketTypes } from "@/services";
 import { API_BASE_URL } from "@/utils/entorn";
 import { useTicketCart } from "@/hook/useTicketCart";
-import TicketCartModal from "@/components/ticketCartModal";
+import TicketCartModal from "@/components/cart/ticketCartModal";
 
 export default function EventDetailPage() {
   const { id } = useParams();

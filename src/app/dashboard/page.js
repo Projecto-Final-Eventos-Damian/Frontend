@@ -3,19 +3,21 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, getOrganizerEvents, deleteEvent } from '@/services';
+import { getCurrentUser, getOrganizerEvents, getReservationTickets, deleteEvent } from '@/services';
 import EventOrgCard from '@/components/cards/eventOrgCard';
+import ReservationCard from '@/components/cards/ReservationCard';
 
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
+  const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleDeleteEvent = async (id, title) => {
     const confirmDelete = window.confirm(`¿Seguro que quieres eliminar el evento con id ${id} "${title}"?`);
     if (!confirmDelete) return;
-  
+
     try {
       await deleteEvent(id);
       setEvents((prev) => prev.filter((e) => e.id !== id));
@@ -39,10 +41,14 @@ export default function DashboardPage() {
         if (userData.role === 'organizer') {
           const organizerEvents = await getOrganizerEvents(userData.id);
           setEvents(organizerEvents);
+        } else if (userData.role === 'user') {
+          const userReservations = await getReservationTickets(userData.id);
+          setReservations(userReservations);
         }
       } catch (err) {
         console.error(err);
         setEvents([]);
+        setReservations([]);
       } finally {
         setLoading(false);
       }
@@ -81,7 +87,8 @@ export default function DashboardPage() {
             </button>
           </>
         )}
-      </div><br></br>
+      </div><br />
+
       {user.role === 'organizer' ? (
         <>
           <h2 className="text-xl font-semibold mb-2">Tus eventos como organizador</h2>
@@ -96,7 +103,18 @@ export default function DashboardPage() {
           )}
         </>
       ) : (
-        <p className="text-gray-600">Eres un usuario registrado. Aquí se podrían mostrar tus inscripciones u otra información.</p>
+        <>
+          <h2 className="text-xl font-semibold mb-2">Tus reservas</h2>
+          {reservations.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {reservations.map(({ reservation, tickets }) => (
+                <ReservationCard key={reservation.id} reservation={reservation} tickets={tickets} />
+              ))}
+            </div>
+          ) : (
+            <p>No tienes reservas todavía.</p>
+          )}
+        </>
       )}
     </div>
   );

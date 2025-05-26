@@ -2,7 +2,18 @@ import { toast } from 'react-hot-toast';
 import { apiFetch } from '@/services/api';
 import { API_BASE_URL } from '@/utils/entorn';
 
-// cart = { 1: 2, 2: 1 } significa: 2 entradas del tipo 1 y 1 entrada del tipo 2
+export const getReservationTickets = async (userId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/user/${userId}/tickets`);
+  if (!res.ok) throw new Error('No se pudieron obtener las reservas del usuario');
+  return res.json();
+};
+
+export const getReservation = async (reservationId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/${reservationId}`);
+  if (!res.ok) throw new Error('No se pudo obtener la reserva');
+  return res.json();
+};
+
 export const handleReservation = async ({ userId, eventId, cart, onSuccess }) => {
   try {
     const totalTickets = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
@@ -12,7 +23,6 @@ export const handleReservation = async ({ userId, eventId, cart, onSuccess }) =>
       return;
     }
 
-    // 1. Crear reserva
     const reservationRes = await apiFetch(`${API_BASE_URL}/reservations`, {
       method: 'POST',
       body: JSON.stringify({
@@ -26,7 +36,6 @@ export const handleReservation = async ({ userId, eventId, cart, onSuccess }) =>
     if (!reservationRes.ok) throw new Error('Error al crear la reserva');
     const reservation = await reservationRes.json();
 
-    // 2. Crear tickets por cada tipo
     for (const [ticketTypeId, quantity] of Object.entries(cart)) {
       for (let i = 0; i < quantity; i++) {
         const ticketRes = await apiFetch(`${API_BASE_URL}/tickets`, {
