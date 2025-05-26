@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useAuth } from '@/hook/authContext';
+import { useRouter } from 'next/navigation';
 import { Dialog } from '@headlessui/react';
 import { useParams } from "next/navigation";
-import { getEventById, getFollowersCount, getEventTicketTypes } from "@/services";
+import { getEventById, getFollowersCount, getEventTicketTypes, getReservedTicketsCount } from "@/services";
 import { API_BASE_URL } from "@/utils/entorn";
 import { useTicketCart } from "@/hook/useTicketCart";
 import TicketCartModal from "@/components/cart/ticketCartModal";
@@ -14,6 +16,9 @@ export default function EventDetailPage() {
   const [ticketTypes, setTicketTypes] = useState([]);
   const [followersCount, setFollowersCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reservedCount, setReservedCount] = useState(0);
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   const { cart, updateQuantity, totalPrice, resetCart } = useTicketCart(ticketTypes);
 
@@ -35,6 +40,10 @@ export default function EventDetailPage() {
 
       getEventTicketTypes(id)
         .then(setTicketTypes)
+        .catch(console.error);
+
+      getReservedTicketsCount(id)
+        .then(setReservedCount)
         .catch(console.error);
     }
   }, [id]);
@@ -62,12 +71,18 @@ export default function EventDetailPage() {
       <p><strong>Ubicación:</strong> {event.location}</p>
       <p><strong>Inicio:</strong> {new Date(event.start_date_time).toLocaleString()}</p>
       <p><strong>Fin:</strong> {new Date(event.end_date_time).toLocaleString()}</p>
-      <p><strong>Capacidad:</strong> {event.capacity}</p>
+      <p><strong>Plazas disponibles:</strong> {event.capacity - reservedCount} / {event.capacity}</p>
 
       {ticketTypes.length > 0 && (
         <div className="mt-6">
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              if (!isAuthenticated) {
+                router.push(`/login?redirect=/event/${id}`);
+              } else {
+                setIsModalOpen(true);
+              }
+            }}
             className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
           >
             Reservar Tickets

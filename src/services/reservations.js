@@ -14,6 +14,12 @@ export const getReservation = async (reservationId) => {
   return res.json();
 };
 
+export const getReservedTicketsCount = async (eventId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/event/${eventId}/reserved-count`);
+  if (!res.ok) throw new Error('No se pudo obtener el conteo de reservas');
+  return res.json();
+};
+
 export const handleReservation = async ({ userId, eventId, cart, onSuccess }) => {
   try {
     const totalTickets = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
@@ -33,7 +39,11 @@ export const handleReservation = async ({ userId, eventId, cart, onSuccess }) =>
       }),
     });
 
-    if (!reservationRes.ok) throw new Error('Error al crear la reserva');
+    if (!reservationRes.ok) {
+      const errorData = await reservationRes.json();
+      throw new Error(errorData.detail || 'Error al crear la reserva');
+    }
+
     const reservation = await reservationRes.json();
 
     for (const [ticketTypeId, quantity] of Object.entries(cart)) {
