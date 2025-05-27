@@ -47,7 +47,6 @@ export const deleteEvent = async (id) => {
   return true;
 };
 
-
 export const getEventById = async (id) => {
   const res = await apiFetch(`${API_BASE_URL}/events/${id}`);
   if (!res.ok) throw new Error('No se pudo cargar el evento');

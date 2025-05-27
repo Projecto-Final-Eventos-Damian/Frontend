@@ -5,21 +5,21 @@ import { useAuth } from '@/hook/authContext';
 import { useRouter } from 'next/navigation';
 import { Dialog } from '@headlessui/react';
 import { useParams } from "next/navigation";
-import { getEventById, getFollowersCount, getEventTicketTypes, getReservedTicketsCount } from "@/services";
+import { getEventById, getEventTicketTypes, getReservedTicketsCount } from "@/services";
 import { API_BASE_URL } from "@/utils/entorn";
 import { useTicketCart } from "@/hook/useTicketCart";
 import TicketCartModal from "@/components/cart/ticketCartModal";
+import OrganizerInfoEvent from "@/components/organizerInfoEvent";
 
 export default function EventDetailPage() {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [ticketTypes, setTicketTypes] = useState([]);
-  const [followersCount, setFollowersCount] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [reservedCount, setReservedCount] = useState(0);
-  const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
   const { cart, updateQuantity, totalPrice, resetCart } = useTicketCart(ticketTypes);
 
   const handleCloseModal = () => {
@@ -30,12 +30,7 @@ export default function EventDetailPage() {
   useEffect(() => {
     if (id) {
       getEventById(id)
-        .then((eventData) => {
-          setEvent(eventData);
-          getFollowersCount(eventData.organizer.id)
-            .then(setFollowersCount)
-            .catch(console.error);
-        })
+        .then((eventData) => setEvent(eventData))
         .catch(console.error);
 
       getEventTicketTypes(id)
@@ -59,15 +54,7 @@ export default function EventDetailPage() {
       />
       <h1 className="text-3xl font-bold">{event.title}</h1>
       <p className="mt-4 text-lg">{event.description}</p>
-
-      <div className="mt-6 p-4 border border-gray-300 rounded-lg shadow-sm bg-white">
-        <h2 className="text-xl font-semibold mb-2">Organizado por</h2>
-        <p>
-          {event.organizer.name} con {followersCount} <strong>followers</strong>{" "}
-          <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">+</button>
-        </p>
-      </div>
-
+      <OrganizerInfoEvent organizer={event.organizer} eventId={id} />
       <p><strong>Ubicación:</strong> {event.location}</p>
       <p><strong>Inicio:</strong> {new Date(event.start_date_time).toLocaleString()}</p>
       <p><strong>Fin:</strong> {new Date(event.end_date_time).toLocaleString()}</p>
