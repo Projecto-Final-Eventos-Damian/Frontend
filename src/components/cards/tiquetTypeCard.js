@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-export default function TicketTypeCard({ ticket, eventId }) {
+export default function TicketTypeCard({ ticket }) {
   return (
     <div className="border p-4 rounded shadow relative flex justify-between items-center">
       <div>

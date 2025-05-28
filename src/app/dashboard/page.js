@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, getOrganizerEvents, getReservationTickets, deleteEvent } from '@/services';
+import { toast } from 'react-hot-toast';
 import EventOrgCard from '@/components/cards/eventOrgCard';
 import ReservationCard from '@/components/cards/ReservationCard';
 
@@ -21,10 +22,10 @@ export default function DashboardPage() {
     try {
       await deleteEvent(id);
       setEvents((prev) => prev.filter((e) => e.id !== id));
-      alert('Evento eliminado correctamente.');
+      toast.success('Evento eliminado correctamente.');
     } catch (err) {
       console.error(err);
-      alert('No se pudo eliminar el evento.');
+      toast.error('No se pudo eliminar el evento.');
     }
   };
 

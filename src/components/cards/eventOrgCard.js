@@ -52,13 +52,22 @@ export default function EventOrgCard({ event, onDelete }) {
           <i className="bi bi-trash text-lg"></i>
         </button>
       </div>
-      <Link
-        href={`/ticketTypes/${event.id}`}
-        title="Ver TiquetTypes"
-        className="bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
-        >
-      Ver tipos de tiquets
-      </Link>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <Link
+          href={`/ticketTypes/${event.id}`}
+          title="Ver TiquetTypes"
+          className="bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
+          >
+        Ver tipos de tiquets
+        </Link>
+        <Link
+          href={`/reservationEvents/${event.id}`}
+          title="Ver Reservas"
+          className="bg-gray-500 hover:bg-gray-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
+          >
+        Reservas
+        </Link>
+      </div>
     </div>
   );
 }

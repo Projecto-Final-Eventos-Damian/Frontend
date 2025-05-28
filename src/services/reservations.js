@@ -20,6 +20,12 @@ export const getReservedTicketsCount = async (eventId) => {
   return res.json();
 };
 
+export const getReservationsTicketsByEventId = async (eventId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/event/${eventId}/tickets`);
+  if (!res.ok) throw new Error('No se pudieron obtener las reservas');
+  return res.json();
+};
+
 export const handleReservation = async ({ userId, eventId, cart, onSuccess }) => {
   try {
     const totalTickets = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
@@ -61,6 +67,14 @@ export const handleReservation = async ({ userId, eventId, cart, onSuccess }) =>
           throw new Error(`Error al crear el ticket tipo ${ticketTypeId}`);
         }
       }
+    }
+
+    const emailRes = await apiFetch(`${API_BASE_URL}/reservations/${reservation.id}/send-confirmation`, {
+      method: 'POST',
+    });
+
+    if (!emailRes.ok) {
+      console.warn('Error al enviar el correo de confirmación');
     }
 
     toast.success('Reserva realizada exitosamente');
