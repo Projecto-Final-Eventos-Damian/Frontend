@@ -77,7 +77,6 @@ export const handleReservation = async ({ userId, eventId, cart, onSuccess }) =>
       console.warn('Error al enviar el correo de confirmación');
     }
 
-    toast.success('Reserva realizada exitosamente');
     onSuccess?.(reservation);
   } catch (err) {
     toast.error(err.message || 'Error al hacer la reserva');

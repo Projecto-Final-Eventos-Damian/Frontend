@@ -17,6 +17,7 @@ export default function TicketCartModal({
 }) {
   const { isAuthenticated } = useAuth();
   const [userId, setUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,23 +28,28 @@ export default function TicketCartModal({
   }, [isAuthenticated]);
 
   const handleClick = async () => {
+    if (isLoading) return;
+  
     if (!userId) {
       toast.error('Debes iniciar sesión para reservar');
       return;
     }
-
+  
     try {
+      setIsLoading(true);
       await handleReservation({
         userId,
         eventId,
         cart,
         onSuccess: () => {
-          console.log('Reserva realizada con éxito');
+          toast.success('Reserva realizada exitosamente');
           onClose();
         },
       });
     } catch (err) {
       toast.error(err.message || 'Error al hacer la reserva');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,10 +70,13 @@ export default function TicketCartModal({
             Volver
         </button>
         <button
-            onClick={handleClick}
-            className="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+          onClick={handleClick}
+          disabled={isLoading}
+          className={`px-4 py-2 font-semibold rounded transition ${
+            isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'
+          }`}
         >
-            Confirmar Reserva
+          {isLoading ? 'Procesando...' : 'Confirmar Reserva'}
         </button>
       </div>
     </>

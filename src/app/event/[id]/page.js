@@ -21,29 +21,37 @@ export default function EventDetailPage() {
   const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   const { cart, updateQuantity, totalPrice, resetCart } = useTicketCart(ticketTypes);
-
+  
   const handleCloseModal = () => {
     setIsModalOpen(false);
     resetCart();
+    
+    if (id) {
+      getReservedTicketsCount(id)
+      .then(setReservedCount)
+      .catch(console.error);
+    }
   };
-
+  
   useEffect(() => {
     if (id) {
       getEventById(id)
-        .then((eventData) => setEvent(eventData))
-        .catch(console.error);
-
+      .then((eventData) => setEvent(eventData))
+      .catch(console.error);
+      
       getEventTicketTypes(id)
-        .then(setTicketTypes)
-        .catch(console.error);
-
+      .then(setTicketTypes)
+      .catch(console.error);
+      
       getReservedTicketsCount(id)
-        .then(setReservedCount)
-        .catch(console.error);
+      .then(setReservedCount)
+      .catch(console.error);
     }
   }, [id]);
-
+  
   if (!event) return <div>Cargando evento...</div>;
+  
+  const availableSpots = event.capacity - reservedCount;
 
   return (
     <div className="p-6">
@@ -62,18 +70,22 @@ export default function EventDetailPage() {
 
       {ticketTypes.length > 0 && (
         <div className="mt-6">
-          <button
-            onClick={() => {
-              if (!isAuthenticated) {
-                router.push(`/login?redirect=/event/${id}`);
-              } else {
-                setIsModalOpen(true);
-              }
-            }}
-            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
-          >
-            Reservar Tickets
-          </button>
+          {availableSpots <= 0 ? (
+            <span className="text-red-600 font-semibold text-xl">Entradas Agotadas</span>
+          ) : (
+            <button
+              onClick={() => {
+                if (!isAuthenticated) {
+                  router.push(`/login?redirect=/event/${id}`);
+                } else {
+                  setIsModalOpen(true);
+                }
+              }}
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition cursor-pointer"
+            >
+              Reservar Tickets
+            </button>
+          )}
         </div>
       )}
 
@@ -93,6 +105,13 @@ export default function EventDetailPage() {
           </div>
         </div>
       </Dialog>
+
+      <button
+        onClick={() => router.back()}
+        className="mt-8 px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded hover:bg-gray-400 transition cursor-pointer"
+      >
+        Volver Atrás
+      </button>
     </div>
   );
 }

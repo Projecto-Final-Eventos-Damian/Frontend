@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import EventCard from "@/components/cards/eventCard";
-import { getEvents } from "@/services";
+import { getOpenEvents } from "@/services";
 
 export default function Home() {
   const [events, setEvents] = useState(null);
@@ -10,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getEvents()
+        const data = await getOpenEvents()
         setEvents(data);
       } catch (err) {
         console.error("Error:", err);

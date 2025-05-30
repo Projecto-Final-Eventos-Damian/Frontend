@@ -59,6 +59,12 @@ export const getEvents = async () => {
   return res.json();
 };
 
+export const getOpenEvents = async () => {
+  const res = await apiFetch(`${API_BASE_URL}/events/open`);
+  if (!res.ok) throw new Error('No se pudo cargar los eventos');
+  return res.json();
+};
+
 export const getOrganizerEvents = async (organizerId) => {
   const res = await apiFetch(`${API_BASE_URL}/events/organizer/${organizerId}`);
   if (!res.ok) throw new Error('No se pudieron obtener los eventos del organizador');
