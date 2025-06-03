@@ -3,19 +3,30 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import EventForm from '@/components/forms/eventForm';
-import { createEvent, createTicketType } from '@/services';
+import { createEvent, createTicketType, getCurrentUser } from '@/services';
 import { toast } from 'react-hot-toast';
+import Link from 'next/link';
 
 export default function CreateEventsPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
+  const [isOrganizer, setIsOrganizer] = useState(null); // null: cargando, true/false: definido
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       router.replace('/login?redirect=/create/events');
     } else {
-      setAuthorized(true);
+      getCurrentUser()
+        .then((user) => {
+          setIsOrganizer(user?.role === 'organizer');
+          setAuthorized(true);
+        })
+        .catch(() => {
+          setAuthorized(false);
+          setIsOrganizer(false);
+          router.replace('/');
+        });
     }
   }, [router]);
 
@@ -41,12 +52,32 @@ export default function CreateEventsPage() {
     }
   };
 
-  if (!authorized) return null;
+  if (!authorized || isOrganizer === null) return null;
 
   return (
     <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Crear evento</h1>
-      <EventForm onSubmit={handleCreateEvent} mode="create" />
+      {isOrganizer ? (
+        <>
+          <h1 className="text-2xl font-bold mb-4">Crear evento</h1>
+          <EventForm onSubmit={handleCreateEvent} mode="create" />
+        </>
+      ) : (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-2xl">⚠️</span>
+            <h2 className="font-semibold text-lg">Solo los organizadores pueden crear eventos</h2>
+          </div>
+          <p className="mb-2">
+            Para poder crear un evento, necesitas estar registrado como organizador.
+          </p>
+          <Link
+            href="/login?register=1"
+            className="underline text-blue-600 hover:text-blue-800"
+          >
+            Regístrate aquí como organizador
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,7 +8,28 @@ export const loginUser = async (email, password) => {
     body: JSON.stringify({ email, password }),
   });
 
-  if (!res.ok) throw new Error('Credenciales incorrectas');
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'Error al registrarse');
+  }
+
+  return res.json();
+};
+
+export const registerUser = async (name, email, password, role) => {
+  const res = await fetch(`${API_BASE_URL}/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, email, password, role }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || 'Error al registrarse');
+  }
+
   return res.json();
 };
 

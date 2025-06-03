@@ -1,35 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginSchema } from '@/schemas/loginSchema';
 
 export default function LoginForm({ onSubmit }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(email, password);
+  const submitHandler = (data) => {
+    onSubmit(data.email, data.password);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
       <input
+        {...register('email')}
         type="email"
         placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full p-2 border mb-2 rounded"
-        required
+        className="w-full p-2 border rounded"
       />
+      {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+
       <input
+        {...register('password')}
         type="password"
         placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full p-2 border mb-2 rounded"
-        required
+        className="w-full p-2 border rounded"
       />
-      <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+      {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+
+      <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded cursor-pointer">
         Entrar
       </button>
     </form>

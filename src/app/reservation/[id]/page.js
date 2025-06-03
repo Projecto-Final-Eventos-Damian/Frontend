@@ -41,7 +41,6 @@ export default function ReservationDetailPage() {
       <div className="mb-4">
         <EventCard event={reservation.event} />
       </div>
-      <p className="text-gray-600 mb-2">Estado: <strong>{reservation.status}</strong></p>
       <p className="text-gray-600 mb-4">Fecha de reserva: <strong>{new Date(reservation.reserved_at).toLocaleString()}</strong></p>
 
       <h2 className="text-xl font-semibold mt-4 mb-2">Tickets</h2>
@@ -52,7 +51,6 @@ export default function ReservationDetailPage() {
               <p><strong>Código:</strong> {ticket.ticket_code}</p>
               <p><strong>Tipo:</strong> {ticket.ticket_type?.name || 'N/A'}</p>
               <p><strong>Precio:</strong> {ticket.ticket_type?.price} €</p>
-              <p><strong>Estado:</strong> {ticket.status}</p>
             </li>
           ))}
         </ul>

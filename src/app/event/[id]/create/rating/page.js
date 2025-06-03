@@ -3,7 +3,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import RatingForm from '@/components/forms/ratingForm';
-import { createRating } from '@/services';
+import { createRating, getEventById } from '@/services';
 import { toast } from 'react-hot-toast';
 
 export default function CreateRatingPage() {
@@ -11,6 +11,7 @@ export default function CreateRatingPage() {
   const params = useParams();
   const eventId = params.id;
   const [authorized, setAuthorized] = useState(false);
+  const [event, setEvent] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -18,6 +19,9 @@ export default function CreateRatingPage() {
       router.replace(`/login?redirect=/event/${eventId}/create/rating`);
     } else {
       setAuthorized(true);
+      getEventById(eventId)
+        .then(setEvent)
+        .catch(() => toast.error("No se pudo cargar el evento"));
     }
   }, [eventId, router]);
 
@@ -32,10 +36,11 @@ export default function CreateRatingPage() {
   };
 
   if (!authorized) return null;
+  if (!event) return <p className="p-4">Cargando evento...</p>;
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Valora el evento</h1>
+      <h1 className="text-2xl font-bold mb-4">Valora el evento: {event.title}</h1>
       <RatingForm onSubmit={handleCreateRating} />
     </div>
   );
