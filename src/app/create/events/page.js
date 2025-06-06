@@ -78,6 +78,14 @@ export default function CreateEventsPage() {
           </Link>
         </div>
       )}
+      <br></br>
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Volver
+      </button>
     </div>
   );
 }

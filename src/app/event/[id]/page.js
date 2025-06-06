@@ -110,7 +110,7 @@ export default function EventDetailPage() {
         onClick={() => router.back()}
         className="mt-8 px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded hover:bg-gray-400 transition cursor-pointer"
       >
-        Volver Atrás
+        Volver
       </button>
     </div>
   );

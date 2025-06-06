@@ -1,16 +1,21 @@
 'use client';
 
+import { API_BASE_URL } from '@/utils/entorn';
+import { useAuth } from '@/hook/authContext';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getReservation, getTicketsByReservation } from '@/services';
+import { getReservation, getTicketsByReservation, downloadReservationPDF } from '@/services';
+import { toast } from 'react-hot-toast';
 import EventCard from '@/components/cards/eventCard';
 
 export default function ReservationDetailPage() {
+  const { user, isLoading: authLoading } = useAuth();
   const { id } = useParams();
   const router = useRouter();
   const [reservation, setReservation] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const handleViewPDF = () => downloadReservationPDF(id);
 
   useEffect(() => {
     const fetchReservation = async () => {
@@ -31,17 +36,18 @@ export default function ReservationDetailPage() {
     fetchReservation();
   }, [id, router]);
 
-  if (loading) return <p className="p-4">Cargando reserva...</p>;
+  if (loading || authLoading) return <p className="p-4">Cargando reserva...</p>;
   if (!reservation) return <p>No se encontró la reserva.</p>;
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Detalle de la Reserva</h1>
-      <p className="text-gray-600 mb-2">Evento:</p>
+      <h1 className="text-2xl font-bold mb-4">Detalle de la Reserva del evento:</h1>
       <div className="mb-4">
         <EventCard event={reservation.event} />
       </div>
-      <p className="text-gray-600 mb-4">Fecha de reserva: <strong>{new Date(reservation.reserved_at).toLocaleString()}</strong></p>
+      <p className="text-gray-600 mb-4">
+        Fecha de reserva: <strong>{new Date(reservation.reserved_at).toLocaleString()}</strong>
+      </p>
 
       <h2 className="text-xl font-semibold mt-4 mb-2">Tickets</h2>
       {tickets.length > 0 ? (
@@ -57,6 +63,24 @@ export default function ReservationDetailPage() {
       ) : (
         <p>No hay tickets asociados.</p>
       )}
+
+      <div className="flex gap-4 mt-6">
+        {user?.role === 'user' && (
+          <button
+            onClick={handleViewPDF}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            Descargar entradas en pdf
+          </button>
+        )}
+
+        <button
+          onClick={() => router.back()}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Volver
+        </button>
+      </div>
     </div>
   );
 }

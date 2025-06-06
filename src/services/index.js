@@ -6,3 +6,4 @@ export * from './followers';
 export * from './reservations';
 export * from './tickets';
 export * from './ratings';
+export * from './pdfs';

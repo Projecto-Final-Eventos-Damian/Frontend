@@ -42,7 +42,12 @@ export default function TicketCartModal({
         eventId,
         cart,
         onSuccess: () => {
-          toast.success('Reserva realizada exitosamente');
+          toast.success('Reserva realizada exitosamente', { duration: 1500 });
+          setTimeout(() => {
+            toast.success('Correo mandado con los datos de la reserva y las entradas', {
+              duration: 3500,
+            });
+          }, 1700);
           onClose();
         },
       });
