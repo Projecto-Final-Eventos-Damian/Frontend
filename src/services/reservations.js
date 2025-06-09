@@ -14,6 +14,12 @@ export const getReservation = async (reservationId) => {
   return res.json();
 };
 
+export const getReservationsByEventId = async (eventId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/event/${eventId}`);
+  if (!res.ok) throw new Error('No se pudieron obtener las reservas');
+  return res.json();
+};
+
 export const getReservedTicketsCount = async (eventId) => {
   const res = await apiFetch(`${API_BASE_URL}/reservations/event/${eventId}/reserved-count`);
   if (!res.ok) throw new Error('No se pudo obtener el conteo de reservas');
@@ -23,6 +29,14 @@ export const getReservedTicketsCount = async (eventId) => {
 export const getReservationsTicketsByEventId = async (eventId) => {
   const res = await apiFetch(`${API_BASE_URL}/reservations/event/${eventId}/tickets`);
   if (!res.ok) throw new Error('No se pudieron obtener las reservas');
+  return res.json();
+};
+
+export const deleteReservation = async (reservationId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/${reservationId}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('No se pudo eliminar la reserva');
   return res.json();
 };
 

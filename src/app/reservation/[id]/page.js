@@ -1,10 +1,9 @@
 'use client';
 
-import { API_BASE_URL } from '@/utils/entorn';
 import { useAuth } from '@/hook/authContext';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getReservation, getTicketsByReservation, downloadReservationPDF } from '@/services';
+import { getReservation, getTicketsByReservation, downloadReservationPDF, deleteReservation } from '@/services';
 import { toast } from 'react-hot-toast';
 import EventCard from '@/components/cards/eventCard';
 
@@ -15,7 +14,23 @@ export default function ReservationDetailPage() {
   const [reservation, setReservation] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const handleViewPDF = () => downloadReservationPDF(id);
+
+  const handleDeleteReservation = async () => {
+    const confirmDelete = window.confirm('¿Seguro que quieres cancelar esta reserva?');
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteReservation(id);
+      toast.success('Reserva cancelada correctamente.');
+      router.push('/dashboard');
+    } catch (error) {
+      console.error(error);
+      toast.error('No se pudo cancelar la reserva.');
+    }
+  };
 
   useEffect(() => {
     const fetchReservation = async () => {
@@ -64,14 +79,23 @@ export default function ReservationDetailPage() {
         <p>No hay tickets asociados.</p>
       )}
 
-      <div className="flex gap-4 mt-6">
+      <div className="flex flex-wrap gap-4 mt-6">
         {user?.role === 'user' && (
-          <button
-            onClick={handleViewPDF}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            Descargar entradas en pdf
-          </button>
+          <>
+            <button
+              onClick={handleViewPDF}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Descargar entradas en PDF
+            </button>
+
+            <button
+              onClick={handleDeleteReservation}
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            >
+              Cancelar reserva
+            </button>
+          </>
         )}
 
         <button

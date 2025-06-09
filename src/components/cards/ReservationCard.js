@@ -32,9 +32,6 @@ export default function ReservationUserCard({ reservation, tickets }) {
       <p className="text-sm text-gray-500 mb-2">
         Fecha de reserva: {new Date(reservation.reserved_at).toLocaleDateString()}
       </p>
-      <p className="text-sm text-gray-500 mb-2 capitalize">
-        Estado: <span className="font-medium">{reservation.status}</span>
-      </p>
       <div className="mt-2">
         <h4 className="text-sm font-semibold mb-1">Resumen de entradas:</h4>
         <ul className="pl-4 text-sm text-gray-700 list-disc">

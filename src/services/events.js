@@ -70,3 +70,11 @@ export const getOrganizerEvents = async (organizerId) => {
   if (!res.ok) throw new Error('No se pudieron obtener los eventos del organizador');
   return res.json();
 };
+
+export const notifyEventCancellation = async (eventId) => {
+  const res = await apiFetch(`${API_BASE_URL}/reservations/event/${eventId}/notify-cancellation`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error('No se pudieron enviar las notificaciones de cancelación');
+  return res.json();
+};

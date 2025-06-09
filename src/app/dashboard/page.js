@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, getOrganizerEvents, getReservationTickets, deleteEvent } from '@/services';
+import { getCurrentUser, getOrganizerEvents, getReservationTickets, deleteEvent, getReservationsByEventId, notifyEventCancellation } from '@/services';
 import { toast } from 'react-hot-toast';
 import EventOrgCard from '@/components/cards/eventOrgCard';
 import ReservationCard from '@/components/cards/ReservationCard';
@@ -16,10 +16,17 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   const handleDeleteEvent = async (id, title) => {
-    const confirmDelete = window.confirm(`¿Seguro que quieres eliminar el evento con id ${id} "${title}"?`);
-    if (!confirmDelete) return;
-
     try {
+      const reservations = await getReservationsByEventId(id);
+      let confirmDelete = false;
+      if (reservations.length > 0) {
+        confirmDelete = window.confirm(`Este evento ya tiene reservas. ¿Seguro que quieres eliminarlo junto con todas sus reservas?`);
+        if (!confirmDelete) return;
+        await notifyEventCancellation(id);
+      } else {
+        confirmDelete = window.confirm(`¿Seguro que quieres eliminar el evento con id ${id} "${title}"?`);
+        if (!confirmDelete) return;
+      }
       await deleteEvent(id);
       setEvents((prev) => prev.filter((e) => e.id !== id));
       toast.success('Evento eliminado correctamente.');
