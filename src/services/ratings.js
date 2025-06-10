@@ -19,3 +19,9 @@ export const createRating = async (ratingData) => {
 
   return res.json();
 };
+
+export const getEventRatings = async (eventId) => {
+  const response = await apiFetch(`${API_BASE_URL}/ratings/event/${eventId}`);
+  if (!response.ok) throw new Error('Error al obtener las valoraciones');
+  return response.json();
+};

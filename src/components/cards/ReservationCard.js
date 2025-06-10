@@ -1,9 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hook/authContext';
 
 export default function ReservationUserCard({ reservation, tickets }) {
   const router = useRouter();
+  const { user } = useAuth();
 
   const groupedTickets = tickets.reduce((acc, ticket) => {
     const key = ticket.ticket_type.name;
@@ -29,7 +31,12 @@ export default function ReservationUserCard({ reservation, tickets }) {
       <h3 className="text-lg font-semibold text-blue-600 mb-1">
         Evento: {reservation.event?.title || 'Título no disponible'}
       </h3>
-      <p className="text-sm text-gray-500 mb-2">
+      {user?.role === 'organizer' && reservation.user && (
+        <p className="text-sm text-gray-600 mb-2">
+          Reserva realizada por: {reservation.user.name}
+        </p>
+      )}
+      <p className="text-sm text-gray-600 mb-2">
         Fecha de reserva: {new Date(reservation.reserved_at).toLocaleDateString()}
       </p>
       <div className="mt-2">

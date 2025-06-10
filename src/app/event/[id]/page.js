@@ -55,11 +55,13 @@ export default function EventDetailPage() {
 
   return (
     <div className="p-6">
-      <img
-        src={`${API_BASE_URL}${event.image_url}`}
-        alt={event.title}
-        className="mt-4 max-w-md"
-      />
+      {event.image_url && (
+        <img
+          src={`${API_BASE_URL}${event.image_url}`}
+          alt={event.title}
+          className="mt-4 max-w-md"
+        />
+      )}
       <h1 className="text-3xl font-bold">{event.title}</h1>
       <p className="mt-4 text-lg">{event.description}</p>
       <OrganizerInfoEvent organizer={event.organizer} eventId={id} />
@@ -73,18 +75,20 @@ export default function EventDetailPage() {
           {availableSpots <= 0 ? (
             <span className="text-red-600 font-semibold text-xl">Entradas Agotadas</span>
           ) : (
-            <button
-              onClick={() => {
-                if (!isAuthenticated) {
-                  router.push(`/login?redirect=/event/${id}`);
-                } else {
-                  setIsModalOpen(true);
-                }
-              }}
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition cursor-pointer"
-            >
-              Reservar Tickets
-            </button>
+            new Date() < new Date(event.end_date_time) && user?.role !== 'organizer' && (
+              <button
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    router.push(`/login?redirect=/event/${id}`);
+                  } else {
+                    setIsModalOpen(true);
+                  }
+                }}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition cursor-pointer"
+              >
+                Reservar Tickets
+              </button>
+            )
           )}
         </div>
       )}
@@ -108,7 +112,7 @@ export default function EventDetailPage() {
 
       <button
         onClick={() => router.back()}
-        className="mt-8 px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded hover:bg-gray-400 transition cursor-pointer"
+        className="mt-4 px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded hover:bg-gray-400 transition cursor-pointer"
       >
         Volver
       </button>

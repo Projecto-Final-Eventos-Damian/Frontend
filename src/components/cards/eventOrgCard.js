@@ -2,18 +2,20 @@ import { API_BASE_URL } from '@/utils/entorn';
 import Link from 'next/link';
 
 export default function EventOrgCard({ event, onDelete }) {
+  const imageUrl = event.image_url
+    ? `${API_BASE_URL}${event.image_url}`
+    : `${API_BASE_URL}/public/images/events/default_event.png`;
+
   return (
     <div className="bg-white shadow rounded border border-gray-200 p-4 flex flex-col gap-4">
 
       <div className="flex flex-col lg:flex-row gap-4 items-start">
         <Link href={`/event/${event.id}`} className="w-full lg:w-1/3">
-          {event.image_url && (
-            <img
-              src={`${API_BASE_URL}${event.image_url}`}
-              alt={event.title}
-              className="w-full h-48 object-cover rounded"
-            />
-          )}
+          <img
+            src={imageUrl}
+            alt={event.title}
+            className="w-full h-48 object-cover rounded"
+          />
         </Link>
 
         <div className="flex flex-col justify-between flex-1 w-full">
@@ -34,15 +36,15 @@ export default function EventOrgCard({ event, onDelete }) {
           href={`/event/${event.id}`}
           title="Ver"
           className="bg-green-600 hover:bg-green-700 text-white rounded px-3 py-2 w-full flex justify-center items-center"
-          >
-        <i className="bi bi-eye text-lg"></i>
+        >
+          <i className="bi bi-eye text-lg"></i>
         </Link>
         <Link
           href={`/edit/event/${event.id}`}
           title="Editar"
           className="bg-yellow-500 hover:bg-yellow-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
-          >
-        <i className="bi bi-pencil text-lg"></i>
+        >
+          <i className="bi bi-pencil text-lg"></i>
         </Link>
         <button
           onClick={() => onDelete(event.id, event.title)}
@@ -52,20 +54,28 @@ export default function EventOrgCard({ event, onDelete }) {
           <i className="bi bi-trash text-lg"></i>
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <Link
           href={`/ticketTypes/${event.id}`}
           title="Ver TiquetTypes"
           className="bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
-          >
-        Ver tipos de tiquets
+        >
+          <i className="bi bi-ticket-perforated-fill text-lg mr-2"></i> Tiquets
         </Link>
         <Link
           href={`/reservationEvents/${event.id}`}
           title="Ver Reservas"
           className="bg-gray-500 hover:bg-gray-600 text-white rounded px-3 py-2 w-full flex justify-center items-center"
-          >
-        Reservas
+        >
+          <i className="bi bi-calendar-check-fill text-lg mr-2"></i> Reservas
+        </Link>
+        <Link
+          href={`/eventRatings/${event.id}`}
+          title="Ver Ratings"
+          className="bg-purple-600 hover:bg-purple-700 text-white rounded px-3 py-2 w-full flex justify-center items-center"
+        >
+          <i className="bi bi-star-fill text-lg mr-1"></i> Ratings
         </Link>
       </div>
     </div>

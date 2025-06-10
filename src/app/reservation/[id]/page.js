@@ -60,6 +60,11 @@ export default function ReservationDetailPage() {
       <div className="mb-4">
         <EventCard event={reservation.event} />
       </div>
+      {user?.role === 'organizer' && reservation.user && (
+        <p className="text-gray-600 mb-4">
+          Reserva realizada por: <strong>{reservation.user.name}</strong>
+        </p>
+      )}
       <p className="text-gray-600 mb-4">
         Fecha de reserva: <strong>{new Date(reservation.reserved_at).toLocaleString()}</strong>
       </p>

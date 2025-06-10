@@ -2,18 +2,20 @@ import { API_BASE_URL } from '@/utils/entorn';
 import Link from "next/link";
 
 export default function EventCard({ event }) {
+  const imageUrl = event.image_url
+    ? `${API_BASE_URL}${event.image_url}`
+    : `${API_BASE_URL}/public/images/events/default_event.png`;
+
   return (
     <Link href={`/event/${event.id}`}>
       <div className="bg-white shadow rounded p-4 border border-gray-200">
         <h3 className="text-xl font-bold text-indigo-600">{event.title}</h3>
       
-        {event.image_url && (
-          <img
-            src={`${API_BASE_URL}${event.image_url}`}
-            alt={event.title}
-            className="w-full h-48 object-cover rounded mt-3"
-          />
-        )}
+        <img
+          src={imageUrl}
+          alt={event.title}
+          className="w-full h-48 object-cover rounded mt-3"
+        />
 
         <p className="text-gray-700 mb-2">{event.description}</p>
         
@@ -40,4 +42,3 @@ export default function EventCard({ event }) {
     </Link>
   );
 }
-  
