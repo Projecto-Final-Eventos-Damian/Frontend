@@ -32,9 +32,11 @@ export default function CreateCategoryPage() {
   if (!authorized) return null;
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Crear nueva categoría</h1>
-      <CategoryForm onSubmit={handleCreateCategory} />
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold text-center text-gray-800">Crear nueva categoría</h1>
+      <div className="bg-white shadow-md rounded-2xl p-6">
+        <CategoryForm onSubmit={handleCreateCategory} />
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={raleway.className}>
+      <body className={`${raleway.className} bg-teal-200`}>
         <AuthProvider>
           <ClientLayout>
             {children}

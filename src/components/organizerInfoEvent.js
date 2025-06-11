@@ -1,15 +1,11 @@
 'use client';
 
+import { API_BASE_URL } from "@/utils/entorn";
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hook/authContext';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import {
-  followOrganizer,
-  unfollowOrganizer,
-  getFollowersCount,
-  checkFollowStatus,
-} from '@/services';
+import { followOrganizer, unfollowOrganizer, getFollowersCount, checkFollowStatus } from '@/services';
 
 export default function OrganizerInfoEvent({ organizer, eventId }) {
   const { user, isAuthenticated } = useAuth();
@@ -73,21 +69,32 @@ export default function OrganizerInfoEvent({ organizer, eventId }) {
   }, [organizer.id, isAuthenticated, user]);
 
   return (
-    <div className="mt-6 p-4 border border-gray-300 rounded-lg shadow-sm bg-white">
-      <h2 className="text-xl font-semibold mb-2">Organizado por</h2>
-      <p>
-        {organizer.name} con {followersCount} <strong>followers</strong>{" "}
+    <div className="mt-6 p-4 border border-indigo-300 rounded-lg shadow bg-gray-100">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center space-x-4">
+          {organizer.image_url && (
+            <img
+              src={`${API_BASE_URL}${organizer.image_url}`}
+              alt={organizer.name}
+              className="w-12 h-12 rounded-full object-cover border-2 border-indigo-500"
+            />
+          )}
+          <div className="flex flex-col text-gray-700">
+            <span className="font-semibold">{organizer.name}</span>
+            <span>{followersCount} followers</span>
+          </div>
+        </div>
         {isAuthenticated && (
           <button
-            className={`ml-2 py-1 px-3 text-white font-semibold rounded-md transition duration-300 ${
-              isFollowing ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
+            className={`py-1 px-4 font-semibold rounded-full transition ${
+              isFollowing ? "bg-red-500 hover:bg-red-600 text-white" : "bg-indigo-500 hover:bg-indigo-600 text-white"
             }`}
             onClick={isFollowing ? handleUnfollow : handleFollow}
           >
             {isFollowing ? "Unfollow" : "Follow"}
           </button>
         )}
-      </p>
+      </div>
     </div>
   );
 }

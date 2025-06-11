@@ -33,13 +33,13 @@ export default function RatingForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
-      <div className="flex items-center space-x-2">
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6 bg-white p-6 rounded-2xl shadow-lg">
+      <div className="flex justify-center space-x-2">
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
-            className={`text-3xl cursor-pointer ${
-              (hovered || selected) >= star ? 'text-yellow-400' : 'text-gray-300'
+            className={`text-4xl cursor-pointer transition-transform ${
+              (hovered || selected) >= star ? 'text-yellow-400 scale-110' : 'text-gray-300'
             }`}
             onMouseEnter={() => setHovered(star)}
             onMouseLeave={() => setHovered(0)}
@@ -50,14 +50,14 @@ export default function RatingForm({ onSubmit }) {
         ))}
       </div>
       {errors.rating && (
-        <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>
+        <p className="text-red-500 text-sm text-center">{errors.rating.message}</p>
       )}
 
       <div>
         <textarea
           {...register('review')}
           placeholder="Deja un comentario (opcional)"
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           rows={4}
         />
         {errors.review && (
@@ -67,7 +67,7 @@ export default function RatingForm({ onSubmit }) {
 
       <button
         type="submit"
-        className="w-full p-2 bg-green-600 text-white rounded hover:bg-green-700"
+        className="w-full py-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold rounded-2xl transition-colors"
       >
         Enviar valoración
       </button>

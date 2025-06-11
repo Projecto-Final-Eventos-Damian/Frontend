@@ -54,68 +54,90 @@ export default function EventDetailPage() {
   const availableSpots = event.capacity - reservedCount;
 
   return (
-    <div className="p-6">
-      {event.image_url && (
-        <img
-          src={`${API_BASE_URL}${event.image_url}`}
-          alt={event.title}
-          className="mt-4 max-w-md"
-        />
-      )}
-      <h1 className="text-3xl font-bold">{event.title}</h1>
-      <p className="mt-4 text-lg">{event.description}</p>
-      <OrganizerInfoEvent organizer={event.organizer} eventId={id} />
-      <p><strong>Ubicación:</strong> {event.location}</p>
-      <p><strong>Inicio:</strong> {new Date(event.start_date_time).toLocaleString()}</p>
-      <p><strong>Fin:</strong> {new Date(event.end_date_time).toLocaleString()}</p>
-      <p><strong>Plazas disponibles:</strong> {event.capacity - reservedCount} / {event.capacity}</p>
+    <div className="min-h-screen bg-teal-200 py-10 px-4 sm:px-10">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-indigo-300">
+        {event.image_url && (
+          <img
+            src={`${API_BASE_URL}${event.image_url}`}
+            alt={event.title}
+            className="w-full h-64 object-cover rounded-lg mb-6 transition-transform"
+          />
+        )}
 
-      {ticketTypes.length > 0 && (
-        <div className="mt-6">
-          {availableSpots <= 0 ? (
-            <span className="text-red-600 font-semibold text-xl">Entradas Agotadas</span>
-          ) : (
-            new Date() < new Date(event.end_date_time) && user?.role !== 'organizer' && (
-              <button
-                onClick={() => {
-                  if (!isAuthenticated) {
-                    router.push(`/login?redirect=/event/${id}`);
-                  } else {
-                    setIsModalOpen(true);
-                  }
-                }}
-                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition cursor-pointer"
-              >
-                Reservar Tickets
-              </button>
-            )
-          )}
-        </div>
-      )}
+        <h1 className="text-4xl font-bold text-indigo-600 mb-4">{event.title}</h1>
 
-      <Dialog open={isModalOpen} onClose={handleCloseModal} className="relative z-50">
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <div className="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg">
-            <Dialog.Title className="text-2xl font-bold mb-4">Carrito de Tickets</Dialog.Title>
-            <TicketCartModal
-              eventId={id}
-              cart={cart}
-              ticketTypes={ticketTypes}
-              updateQuantity={updateQuantity}
-              totalPrice={totalPrice}
-              onClose={handleCloseModal}
-            />
+        <p className="text-gray-700 mb-6">{event.description}</p>
+
+        <OrganizerInfoEvent organizer={event.organizer} eventId={id} />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-gray-700">
+          <div className="p-4 bg-gray-100 border border-indigo-300 rounded-lg shadow">
+            <strong>Inicio</strong>
+            <p>{new Date(event.start_date_time).toLocaleString()}</p>
+          </div>
+          <div className="p-4 bg-gray-100 border border-indigo-300 rounded-lg shadow">
+            <strong>Fin</strong>
+            <p>{new Date(event.end_date_time).toLocaleString()}</p>
+          </div>
+          <div className="p-4 bg-gray-100 border border-indigo-300 rounded-lg shadow">
+            <strong>Ubicación</strong>
+            <p>{event.location}</p>
+          </div>
+          <div className="p-4 bg-gray-100 border border-indigo-300 rounded-lg shadow">
+            <strong>Plazas disponibles</strong>
+            <p>{availableSpots} / {event.capacity}</p>
           </div>
         </div>
-      </Dialog>
 
-      <button
-        onClick={() => router.back()}
-        className="mt-4 px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded hover:bg-gray-400 transition cursor-pointer"
-      >
-        Volver
-      </button>
+        {ticketTypes.length > 0 && (
+          <div className="mt-8 flex justify-center">
+            {availableSpots <= 0 ? (
+              <span className="text-red-600 font-semibold text-xl">Entradas Agotadas</span>
+            ) : (
+              new Date() < new Date(event.end_date_time) && user?.role !== 'organizer' && (
+                <button
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      router.push(`/login?redirect=/event/${id}`);
+                    } else {
+                      setIsModalOpen(true);
+                    }
+                  }}
+                  className="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-full hover:bg-indigo-700 transition-transform hover:scale-105"
+                >
+                  Reservar Tickets
+                </button>
+              )
+            )}
+          </div>
+        )}
+
+        <Dialog open={isModalOpen} onClose={handleCloseModal} className="relative z-50">
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <div className="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg">
+              <Dialog.Title className="text-2xl font-bold mb-4">Carrito de Tickets</Dialog.Title>
+              <TicketCartModal
+                eventId={id}
+                cart={cart}
+                ticketTypes={ticketTypes}
+                updateQuantity={updateQuantity}
+                totalPrice={totalPrice}
+                onClose={handleCloseModal}
+              />
+            </div>
+          </div>
+        </Dialog>
+
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => router.back()}
+            className="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded hover:bg-gray-400 transition"
+          >
+            Volver
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

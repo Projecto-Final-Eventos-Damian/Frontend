@@ -56,47 +56,57 @@ export default function ReservationDetailPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Detalle de la Reserva del evento:</h1>
-      <div className="mb-4">
+      <h1 className="text-3xl font-bold mb-6">Detalle de la Reserva</h1>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Evento</h2>
+      <div className="mb-6">
         <EventCard event={reservation.event} />
       </div>
+
       {user?.role === 'organizer' && reservation.user && (
-        <p className="text-gray-600 mb-4">
-          Reserva realizada por: <strong>{reservation.user.name}</strong>
+        <p className="text-gray-700 mb-4">
+          <span className="font-semibold">Reserva realizada por:</span> {reservation.user.name}
         </p>
       )}
-      <p className="text-gray-600 mb-4">
-        Fecha de reserva: <strong>{new Date(reservation.reserved_at).toLocaleString()}</strong>
+
+      <p className="text-gray-700 mb-6">
+        <span className="font-semibold">Fecha de reserva:</span> {new Date(reservation.reserved_at).toLocaleString()}
       </p>
 
-      <h2 className="text-xl font-semibold mt-4 mb-2">Tickets</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Entradas</h2>
+
       {tickets.length > 0 ? (
-        <ul className="divide-y divide-gray-200">
+        <ul className="divide-y divide-indigo-300 rounded-lg border border-indigo-300 overflow-hidden">
           {tickets.map((ticket) => (
-            <li key={ticket.id} className="py-2">
-              <p><strong>Código:</strong> {ticket.ticket_code}</p>
-              <p><strong>Tipo:</strong> {ticket.ticket_type?.name || 'N/A'}</p>
-              <p><strong>Precio:</strong> {ticket.ticket_type?.price} €</p>
+            <li key={ticket.id} className="p-4 bg-gray-50 transition">
+              <p className="text-sm text-gray-900">
+                <span className="font-bold">Código:</span> {ticket.ticket_code}
+              </p>
+              <p className="text-sm text-gray-900">
+                <span className="font-bold">Tipo:</span> {ticket.ticket_type?.name || 'N/A'}
+              </p>
+              <p className="text-sm text-gray-900">
+                <span className="font-bold">Precio:</span> {parseFloat(ticket.ticket_type?.price).toFixed(2)} €
+              </p>
             </li>
           ))}
         </ul>
       ) : (
-        <p>No hay tickets asociados.</p>
+        <p className="text-gray-600">No hay tickets asociados a esta reserva.</p>
       )}
 
-      <div className="flex flex-wrap gap-4 mt-6">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 mt-8">
         {user?.role === 'user' && (
           <>
             <button
               onClick={handleViewPDF}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
             >
               Descargar entradas en PDF
             </button>
 
             <button
               onClick={handleDeleteReservation}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
             >
               Cancelar reserva
             </button>
@@ -105,7 +115,7 @@ export default function ReservationDetailPage() {
 
         <button
           onClick={() => router.back()}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
         >
           Volver
         </button>

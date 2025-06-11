@@ -25,12 +25,12 @@ export default function CategoryForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
       <div>
         <input
           {...register('name')}
           placeholder="Nombre de la categoría"
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
         {errors.name && (
           <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
@@ -41,21 +41,24 @@ export default function CategoryForm({ onSubmit }) {
         <textarea
           {...register('description')}
           placeholder="Descripción"
-          className="w-full p-2 border rounded"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
         {errors.description && (
           <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
         )}
       </div>
 
-      <button type="submit" className="w-full p-2 bg-green-500 hover:bg-green-600 text-white rounded">
+      <button
+        type="submit"
+        className="w-full py-3 bg-green-500 hover:bg-green-600 text-white text-lg font-semibold rounded-2xl transition-colors"
+      >
         Crear Categoría
       </button>
 
       <button
         type="button"
         onClick={() => router.back()}
-        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold rounded-2xl transition-colors"
       >
         Volver
       </button>

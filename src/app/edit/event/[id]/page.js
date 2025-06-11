@@ -51,18 +51,18 @@ export default function EditEventPage() {
   if (!authorized || !eventData) return null;
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Editar Evento</h1>
-      <EventForm
-        initialData={eventData}
-        onSubmit={handleUpdateEvent}
-        mode="edit"
-      />
-      <br></br>
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <div className="bg-white shadow-md rounded-2xl">
+        <EventForm
+          initialData={eventData}s
+          onSubmit={handleUpdateEvent}
+          mode="edit"
+        />
+      </div>
       <button
         type="button"
         onClick={() => router.back()}
-        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="w-full py-3 bg-blue-500 text-white text-lg font-semibold rounded-2xl hover:bg-blue-600 transition-colors"
       >
         Volver
       </button>

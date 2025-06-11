@@ -26,25 +26,28 @@ export default function ReservationUserCard({ reservation, tickets }) {
   return (
     <div
       onClick={handleClick}
-      className="cursor-pointer border border-gray-200 rounded-xl shadow-md p-4 hover:shadow-lg transition duration-300 bg-white"
+      className="cursor-pointer border border-gray-300 rounded-2xl shadow p-5 hover:shadow-lg hover:scale-[1.02] transition-transform duration-300 bg-white"
     >
-      <h3 className="text-lg font-semibold text-blue-600 mb-1">
-        Evento: {reservation.event?.title || 'Título no disponible'}
+      <h3 className="text-xl font-bold text-indigo-700 mb-2">
+        {reservation.event?.title || 'Evento sin título'}
       </h3>
+
       {user?.role === 'organizer' && reservation.user && (
         <p className="text-sm text-gray-600 mb-2">
-          Reserva realizada por: {reservation.user.name}
+          <span className="font-medium">Reservado por:</span> {reservation.user.name}
         </p>
       )}
-      <p className="text-sm text-gray-600 mb-2">
-        Fecha de reserva: {new Date(reservation.reserved_at).toLocaleDateString()}
+
+      <p className="text-sm text-gray-600 mb-4">
+        <span className="font-medium">Fecha de reserva:</span> {new Date(reservation.reserved_at).toLocaleDateString()}
       </p>
-      <div className="mt-2">
-        <h4 className="text-sm font-semibold mb-1">Resumen de entradas:</h4>
-        <ul className="pl-4 text-sm text-gray-700 list-disc">
+
+      <div className="bg-gray-50 p-3 rounded-lg border border-indigo-400">
+        <h4 className="text-sm font-semibold mb-2 text-gray-700">Resumen de entradas:</h4>
+        <ul className="pl-5 text-sm text-gray-700 list-disc space-y-1">
           {Object.entries(groupedTickets).map(([type, info]) => (
             <li key={type}>
-              {info.count} x {type} por {parseFloat(info.price).toFixed(2)}€ cada una
+              {info.count} x {type} — {parseFloat(info.price).toFixed(2)}€ cada una
             </li>
           ))}
         </ul>

@@ -10,7 +10,7 @@ import Link from 'next/link';
 export default function CreateEventsPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
-  const [isOrganizer, setIsOrganizer] = useState(null); // null: cargando, true/false: definido
+  const [isOrganizer, setIsOrganizer] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -55,34 +55,35 @@ export default function CreateEventsPage() {
   if (!authorized || isOrganizer === null) return null;
 
   return (
-    <div className="p-6 max-w-md mx-auto">
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
       {isOrganizer ? (
         <>
-          <h1 className="text-2xl font-bold mb-4">Crear evento</h1>
-          <EventForm onSubmit={handleCreateEvent} mode="create" />
+          <div className="bg-white shadow-md rounded-2xl">
+            <EventForm onSubmit={handleCreateEvent} mode="create" />
+          </div>
         </>
       ) : (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded shadow">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">⚠️</span>
-            <h2 className="font-semibold text-lg">Solo los organizadores pueden crear eventos</h2>
+        <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-2xl shadow-md space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">⚠️</span>
+            <h2 className="text-xl font-semibold">Solo organizadores pueden crear eventos</h2>
           </div>
-          <p className="mb-2">
-            Para poder crear un evento, necesitas estar registrado como organizador.
+          <p className="text-gray-700">
+            Para crear un evento, debes estar registrado como organizador.
           </p>
           <Link
             href="/login?register=1"
-            className="underline text-blue-600 hover:text-blue-800"
+            className="text-blue-600 hover:underline font-medium"
           >
             Regístrate aquí como organizador
           </Link>
         </div>
       )}
-      <br></br>
+
       <button
         type="button"
         onClick={() => router.back()}
-        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="w-full py-3 bg-blue-500 text-white text-lg font-semibold rounded-2xl hover:bg-blue-600 transition-colors"
       >
         Volver
       </button>

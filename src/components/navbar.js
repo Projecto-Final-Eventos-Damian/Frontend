@@ -19,24 +19,24 @@ export default function Navbar({ menuOpen, setMenuOpen }) {
     <nav className="flex justify-between items-center px-6 py-4">
       <ul className="hidden md:flex gap-5 items-center">
         <li>
-          <Link href="/" className="hover:text-blue-500 transition-colors duration-300">Home</Link>
+          <Link href="/" className="hover:text-indigo-500 transition-colors duration-300">Home</Link>
         </li>
         <li>
-          <Link href="/create/events" className="hover:text-blue-500 transition-colors duration-300">Create Events</Link>
+          <Link href="/create/events" className="hover:text-indigo-500 transition-colors duration-300">Create Events</Link>
         </li>
         <li className="me-5">
-          <Link href="/dashboard" className="hover:text-blue-500 transition-colors duration-300">Dashboard</Link>
+          <Link href="/dashboard" className="hover:text-indigo-500 transition-colors duration-300">Dashboard</Link>
         </li>
       </ul>
 
       <div className="hidden md:block relative">
         {!isAuthenticated ? (
-          <Link href="/login" className="text-blue-500 font-medium">
+          <Link href="/login" className="text-indigo-500 font-medium">
             Login
           </Link>
         ) : (
           <Menu as="div" className="relative inline-block text-left">
-            <Menu.Button className="flex items-center gap-2 cursor-pointer bg-white border px-4 py-2 rounded shadow font-medium hover:bg-gray-50 duration-300">
+            <Menu.Button className="flex items-center gap-2 cursor-pointer bg-white border px-4 py-2 rounded shadow font-medium hover:bg-indigo-100 duration-300">
               {user?.name}
               <ChevronDownIcon className="w-4 h-4" />
             </Menu.Button>
@@ -47,7 +47,7 @@ export default function Navbar({ menuOpen, setMenuOpen }) {
                   {({ active }) => (
                     <Link
                       href="/profile"
-                      className={`transition-colors duration-300 block px-4 py-2 ${active ? 'bg-gray-100' : ''} cursor-pointer`}
+                      className={`transition-colors duration-300 block px-4 py-2 ${active ? 'bg-indigo-100' : ''} cursor-pointer`}
                     >
                       Profile
                     </Link>
@@ -57,7 +57,7 @@ export default function Navbar({ menuOpen, setMenuOpen }) {
                   {({ active }) => (
                     <button
                       onClick={handleLogout}
-                      className={`transition-colors duration-300 block w-full text-left px-4 py-2 text-red-500 cursor-pointer ${active ? 'bg-gray-100' : ''}`}
+                      className={`transition-colors duration-300 block w-full text-left px-4 py-2 text-red-500 cursor-pointer ${active ? 'bg-indigo-100' : ''}`}
                     >
                       Logout
                     </button>

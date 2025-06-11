@@ -21,32 +21,40 @@ export default function LoginPage() {
   }, [searchParams]);
 
   return (
-    <div className="p-6 max-w-sm mx-auto">
-      <h1 className="text-2xl font-bold mb-4">
-        {showRegister ? 'Crear cuenta' : 'Iniciar sesión'}
-      </h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 px-4">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          {showRegister ? 'Crear cuenta' : 'Iniciar sesión'}
+        </h1>
 
-      {showRegister ? (
-        <>
-          <RegisterForm onSubmit={handleRegister} />
-          <p className="text-sm mt-4">
-            ¿Ya tienes cuenta?{' '}
-            <button onClick={() => setShowRegister(false)} className="text-blue-500 underline cursor-pointer">
-              Iniciar sesión
-            </button>
-          </p>
-        </>
-      ) : (
-        <>
-          <LoginForm onSubmit={handleLogin} />
-          <p className="text-sm mt-4">
-            ¿No tienes cuenta?{' '}
-            <button onClick={() => setShowRegister(true)} className="text-blue-500 underline cursor-pointer">
-              Registrarse
-            </button>
-          </p>
-        </>
-      )}
+        {showRegister ? (
+          <>
+            <RegisterForm onSubmit={handleRegister} />
+            <p className="text-sm mt-4 text-center">
+              ¿Ya tienes cuenta?{' '}
+              <button
+                onClick={() => setShowRegister(false)}
+                className="text-blue-500 hover:underline"
+              >
+                Iniciar sesión
+              </button>
+            </p>
+          </>
+        ) : (
+          <>
+            <LoginForm onSubmit={handleLogin} />
+            <p className="text-sm mt-4 text-center">
+              ¿No tienes cuenta?{' '}
+              <button
+                onClick={() => setShowRegister(true)}
+                className="text-blue-500 hover:underline"
+              >
+                Registrarse
+              </button>
+            </p>
+          </>
+        )}
+      </div>
     </div>
   );
 }

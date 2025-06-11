@@ -23,7 +23,7 @@ export default function ClientLayout({ children }) {
     <>
       {!hideLayout && (
         <>
-          <header className="flex items-center justify-between border-b bg-white">
+          <header className="flex items-center justify-between border-b border-indigo-500">
             <div className="flex items-center gap-3 m-3">
               <Link href="/" className="flex items-center gap-3">
                 <div className="relative w-39 h-9 sm:w-49 sm:h-11">
@@ -59,10 +59,10 @@ export default function ClientLayout({ children }) {
         </>
       )}
 
-      <main>{children}</main>
+      <main className="min-h-screen">{children}</main>
 
       {!hideLayout && (
-        <footer className="p-4 text-center border-t text-sm text-gray-500">
+        <footer className="p-4 text-center border-t border-indigo-500 text-sm text-indigo-700">
           <p>&copy; 2025 EventMix. Todos los derechos reservados. Damián Tortosa 2ºDAW-B</p>
         </footer>
       )}

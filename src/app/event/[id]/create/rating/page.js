@@ -10,6 +10,7 @@ export default function CreateRatingPage() {
   const router = useRouter();
   const params = useParams();
   const eventId = params.id;
+
   const [authorized, setAuthorized] = useState(false);
   const [event, setEvent] = useState(null);
 
@@ -21,7 +22,7 @@ export default function CreateRatingPage() {
       setAuthorized(true);
       getEventById(eventId)
         .then(setEvent)
-        .catch(() => toast.error("No se pudo cargar el evento"));
+        .catch(() => toast.error('No se pudo cargar el evento'));
     }
   }, [eventId, router]);
 
@@ -36,11 +37,21 @@ export default function CreateRatingPage() {
   };
 
   if (!authorized) return null;
-  if (!event) return <p className="p-4">Cargando evento...</p>;
+
+  if (!event) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg text-gray-600 animate-pulse">Cargando evento...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Valora el evento: {event.title}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Valora el evento: <span className="text-indigo-600">{event.title}</span>
+      </h1>
+
       <RatingForm onSubmit={handleCreateRating} />
     </div>
   );

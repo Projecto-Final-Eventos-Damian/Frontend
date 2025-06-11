@@ -22,8 +22,8 @@ export default function LoginForm({ onSubmit }) {
       <input
         {...register('email')}
         type="email"
-        placeholder="Email"
-        className="w-full p-2 border rounded"
+        placeholder="Correo electrónico"
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
       {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 
@@ -31,11 +31,14 @@ export default function LoginForm({ onSubmit }) {
         {...register('password')}
         type="password"
         placeholder="Contraseña"
-        className="w-full p-2 border rounded"
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
       />
       {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 
-      <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded cursor-pointer">
+      <button
+        type="submit"
+        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition-colors"
+      >
         Entrar
       </button>
     </form>

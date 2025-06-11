@@ -86,25 +86,30 @@ export default function ProfilePage() {
     }
   };
 
-  if (!user) return <div className="p-4">Cargando perfil...</div>;
+  if (!user) return <div className="p-4 text-center">Cargando perfil...</div>;
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Perfil de usuario</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-indigo-700">Perfil de Usuario</h1>
 
-      <div className="flex items-center gap-4 mb-4">
+      <div className="flex flex-col items-center gap-4 mb-6">
         <img
           src={previewUrl}
           alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border"
+          className="w-28 h-28 rounded-full object-cover border-4 border-indigo-500 shadow-md"
         />
-        <div className="flex flex-col gap-2">
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+        <div className="flex flex-col items-center gap-2 border border-indigo-300 p-3 rounded-2xl bg-white hover:bg-gray-100 transition-bg duration-300">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="text-sm"
+          />
           {user.image_url && (
             <button
               type="button"
               onClick={handleDeleteImage}
-              className="text-red-500 text-sm underline"
+              className="text-red-500 text-sm underline hover:text-red-700"
             >
               Eliminar imagen
             </button>
@@ -112,12 +117,12 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-2xl shadow-lg">
         <div>
-          <label className="block text-sm font-medium">Nombre</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
           <input
             type="text"
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
@@ -125,10 +130,10 @@ export default function ProfilePage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Email</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             type="email"
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
@@ -136,10 +141,10 @@ export default function ProfilePage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Rol</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
           <input
             type="text"
-            className="w-full border px-3 py-2 rounded bg-gray-100"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
             value={user.role}
             disabled
           />
@@ -148,7 +153,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg w-full transition"
         >
           {loading ? 'Guardando...' : 'Guardar cambios'}
         </button>

@@ -68,59 +68,48 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 mx-auto">
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-3xl font-bold mb-6">
         Bienvenido, {user?.name || user?.email || 'Usuario'}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {user.role === 'organizer' && (
-          <>
-            <Link
-              href="/create/categories"
-              className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer flex justify-center"
-            >
-              Crear categoría
-            </Link>
-            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer">
-              Ver estadísticas
-            </button>
-          </>
-        )}
-        {user.role === 'user' && (
-          <>
-            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer">
-              Ver eventos
-            </button>
-            <button className="ml-2 py-0 px-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer">
-              Mis inscripciones
-            </button>
-          </>
-        )}
-      </div><br />
+
+      {user.role === 'organizer' && (
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <Link
+            href="/create/categories"
+            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+          >
+            Crear categoría
+          </Link>
+          <button className="flex items-center justify-center px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+            Ver estadísticas
+          </button>
+        </div>
+      )}
 
       {user.role === 'organizer' ? (
         <>
-          <h2 className="text-xl font-semibold mb-2">Tus eventos como organizador</h2>
+          <h2 className="text-2xl font-semibold mb-4">Tus eventos como organizador</h2>
           {events.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {events.map((event) => (
                 <EventOrgCard key={event.id} event={event} onDelete={handleDeleteEvent} />
               ))}
             </div>
           ) : (
-            <p>No has creado eventos todavía.</p>
+            <p className="text-center text-gray-600 mt-8">No has creado eventos todavía.</p>
           )}
         </>
       ) : (
         <>
-          <h2 className="text-xl font-semibold mb-2">Tus reservas</h2>
+          <h2 className="text-2xl font-semibold mb-4">Tus reservas</h2>
           {reservations.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {reservations.map(({ reservation, tickets }) => (
                 <ReservationCard key={reservation.id} reservation={reservation} tickets={tickets} />
               ))}
             </div>
           ) : (
-            <p>No tienes reservas todavía.</p>
+            <p className="text-center text-gray-600 mt-8">No tienes reservas todavía.</p>
           )}
         </>
       )}

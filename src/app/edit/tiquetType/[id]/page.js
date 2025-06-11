@@ -43,12 +43,14 @@ export default function EditTicketTypePage() {
   }
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Editar Ticket</h1>
-      <TicketTypeForm
-        onSubmit={handleUpdate}
-        initialData={ticketData}
-      />
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold text-center text-gray-800">Editar Ticket</h1>
+      <div className="bg-white shadow-md rounded-2xl p-6">
+        <TicketTypeForm
+          onSubmit={handleUpdate}
+          initialData={ticketData}
+        />
+      </div>
     </div>
   );
 }
