@@ -103,7 +103,7 @@ export default function ProfilePage() {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="text-sm"
+            className="sm:text-sm text-xs"
           />
           {user.image_url && (
             <button
