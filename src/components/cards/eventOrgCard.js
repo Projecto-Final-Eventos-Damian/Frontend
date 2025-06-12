@@ -6,16 +6,19 @@ export default function EventOrgCard({ event, onDelete }) {
     ? `${API_BASE_URL}${event.image_url}`
     : `${API_BASE_URL}/public/images/events/default_event.png`;
 
-  return (
-    <div className="bg-white shadow-md rounded-2xl border border-gray-200 p-6 flex flex-col gap-6 hover:shadow-lg transition">
+  const isFinished = new Date(event.end_date_time) < new Date();
 
+  return (
+    <div className="bg-white shadow-md rounded-2xl border border-gray-200 p-6 flex flex-col gap-6 hover:shadow-lg hover:-translate-y-1 transition group">
       <div className="flex flex-col lg:flex-row gap-6 items-start">
         <Link href={`/event/${event.id}`} className="w-full lg:w-1/3">
-          <img
-            src={imageUrl}
-            alt={event.title}
-            className="w-full h-52 object-cover rounded-xl"
-          />
+          <div className={`relative ${isFinished ? 'overlay-finalizado' : ''}`}>
+            <img
+              src={imageUrl}
+              alt={event.title}
+              className="w-full h-52 object-cover rounded-xl"
+            />
+          </div>
         </Link>
 
         <div className="flex flex-col justify-between flex-1 w-full gap-4">

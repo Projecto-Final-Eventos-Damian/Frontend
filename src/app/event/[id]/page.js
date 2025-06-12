@@ -52,17 +52,20 @@ export default function EventDetailPage() {
   if (!event) return <div>Cargando evento...</div>;
   
   const availableSpots = event.capacity - reservedCount;
+  const isFinished = new Date(event.end_date_time) < new Date();
 
   return (
     <div className="min-h-screen bg-teal-200 py-10 px-4 sm:px-10">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-indigo-300">
-        {event.image_url && (
-          <img
-            src={`${API_BASE_URL}${event.image_url}`}
-            alt={event.title}
-            className="w-full h-64 object-cover rounded-lg mb-6 transition-transform"
-          />
-        )}
+        <div className={`relative ${isFinished ? 'overlay-finalizado' : ''}`}>
+          {event.image_url && (
+            <img
+              src={`${API_BASE_URL}${event.image_url}`}
+              alt={event.title}
+              className="w-full h-64 object-cover rounded-lg mb-6 transition-transform"
+            />
+          )}
+        </div>
 
         <h1 className="text-4xl font-bold text-indigo-600 mb-4">{event.title}</h1>
 

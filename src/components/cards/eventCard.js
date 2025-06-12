@@ -6,11 +6,13 @@ export default function EventCard({ event }) {
     ? `${API_BASE_URL}${event.image_url}`
     : `${API_BASE_URL}/public/images/events/default_event.png`;
 
+  const isFinished = new Date(event.end_date_time) < new Date();
+
   return (
     <Link href={`/event/${event.id}`} className="block group">
       <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 cursor-pointer">
         
-        <div className="overflow-hidden">
+        <div className={`relative overflow-hidden ${isFinished ? 'overlay-finalizado' : ''}`}>
           <img
             src={imageUrl}
             alt={event.title}
