@@ -46,6 +46,12 @@ export default function EventForm({ onSubmit, initialData = {}, mode = 'create' 
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    if (categories.length > 0 && initialData.category?.id) {
+      setValue('category_id', initialData.category.id.toString());
+    }
+  }, [categories, initialData.category?.id, setValue]);
+
   const image = watch('image');
 
   const submitHandler = (data) => {
